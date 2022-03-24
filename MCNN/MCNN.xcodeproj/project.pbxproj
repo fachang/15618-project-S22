@@ -1,0 +1,534 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FE4F753827EA66AF00484934 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F753727EA66AF00484934 /* AppDelegate.swift */; };
+		FE4F753D27EA66AF00484934 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE4F753B27EA66AF00484934 /* Main.storyboard */; };
+		FE4F754027EA66AF00484934 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE4F753E27EA66AF00484934 /* LaunchScreen.storyboard */; };
+		FE4F754F27EA66AF00484934 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = FE4F752C27EA669C00484934 /* Shaders.metal */; };
+		FE4F755027EA66AF00484934 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = FE4F752C27EA669C00484934 /* Shaders.metal */; };
+		FE4F755327EA66AF00484934 /* ShaderTypes.h in Resources */ = {isa = PBXBuildFile; fileRef = FE4F752E27EA669C00484934 /* ShaderTypes.h */; };
+		FE4F755427EA66AF00484934 /* ShaderTypes.h in Resources */ = {isa = PBXBuildFile; fileRef = FE4F752E27EA669C00484934 /* ShaderTypes.h */; };
+		FE4F756327EA6BAF00484934 /* BenchmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756227EA6BAF00484934 /* BenchmarkViewController.swift */; };
+		FE4F756727ECF11C00484934 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756627ECF11B00484934 /* Network.swift */; };
+		FE4F756B27ECF57F00484934 /* Tensor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756A27ECF57E00484934 /* Tensor.swift */; };
+		FE4F756D27ED1FCD00484934 /* LinearLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756C27ED1FCA00484934 /* LinearLayer.swift */; };
+		FE4F757227ED26CF00484934 /* ForwardableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F757127ED26CF00484934 /* ForwardableProtocol.swift */; };
+		FE4F757827ED2CE800484934 /* MTLBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F757727ED2CE800484934 /* MTLBundle.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		FE4F752C27EA669C00484934 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		FE4F752E27EA669C00484934 /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
+		FE4F753427EA66AF00484934 /* MCNN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MCNN.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE4F753727EA66AF00484934 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FE4F753C27EA66AF00484934 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FE4F753F27EA66AF00484934 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FE4F754527EA66AF00484934 /* MCNN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MCNN.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE4F756227EA6BAF00484934 /* BenchmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkViewController.swift; sourceTree = "<group>"; };
+		FE4F756627ECF11B00484934 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		FE4F756A27ECF57E00484934 /* Tensor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tensor.swift; sourceTree = "<group>"; };
+		FE4F756C27ED1FCA00484934 /* LinearLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearLayer.swift; sourceTree = "<group>"; };
+		FE4F757127ED26CF00484934 /* ForwardableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardableProtocol.swift; sourceTree = "<group>"; };
+		FE4F757727ED2CE800484934 /* MTLBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTLBundle.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FE4F753127EA66AF00484934 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE4F754227EA66AF00484934 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FE4F752627EA669A00484934 = {
+			isa = PBXGroup;
+			children = (
+				FE4F752B27EA669C00484934 /* MCNN Shared */,
+				FE4F753627EA66AF00484934 /* MCNN iOS */,
+				FE4F753527EA66AF00484934 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FE4F752B27EA669C00484934 /* MCNN Shared */ = {
+			isa = PBXGroup;
+			children = (
+				FE4F757627ED2CCC00484934 /* utils */,
+				FE4F756927ECF54F00484934 /* models */,
+				FE4F752C27EA669C00484934 /* Shaders.metal */,
+				FE4F752E27EA669C00484934 /* ShaderTypes.h */,
+			);
+			path = "MCNN Shared";
+			sourceTree = "<group>";
+		};
+		FE4F753527EA66AF00484934 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE4F753427EA66AF00484934 /* MCNN.app */,
+				FE4F754527EA66AF00484934 /* MCNN.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FE4F753627EA66AF00484934 /* MCNN iOS */ = {
+			isa = PBXGroup;
+			children = (
+				FE4F753727EA66AF00484934 /* AppDelegate.swift */,
+				FE4F753B27EA66AF00484934 /* Main.storyboard */,
+				FE4F753E27EA66AF00484934 /* LaunchScreen.storyboard */,
+				FE4F756227EA6BAF00484934 /* BenchmarkViewController.swift */,
+			);
+			path = "MCNN iOS";
+			sourceTree = "<group>";
+		};
+		FE4F756927ECF54F00484934 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				FE4F757027ED26B100484934 /* protocols */,
+				FE4F756627ECF11B00484934 /* Network.swift */,
+				FE4F756A27ECF57E00484934 /* Tensor.swift */,
+				FE4F756C27ED1FCA00484934 /* LinearLayer.swift */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		FE4F757027ED26B100484934 /* protocols */ = {
+			isa = PBXGroup;
+			children = (
+				FE4F757127ED26CF00484934 /* ForwardableProtocol.swift */,
+			);
+			path = protocols;
+			sourceTree = "<group>";
+		};
+		FE4F757627ED2CCC00484934 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				FE4F757727ED2CE800484934 /* MTLBundle.swift */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FE4F753327EA66AF00484934 /* MCNN iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE4F755927EA66AF00484934 /* Build configuration list for PBXNativeTarget "MCNN iOS" */;
+			buildPhases = (
+				FE4F753027EA66AF00484934 /* Sources */,
+				FE4F753127EA66AF00484934 /* Frameworks */,
+				FE4F753227EA66AF00484934 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MCNN iOS";
+			productName = "MCNN iOS";
+			productReference = FE4F753427EA66AF00484934 /* MCNN.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FE4F754427EA66AF00484934 /* MCNN macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE4F755C27EA66AF00484934 /* Build configuration list for PBXNativeTarget "MCNN macOS" */;
+			buildPhases = (
+				FE4F754127EA66AF00484934 /* Sources */,
+				FE4F754227EA66AF00484934 /* Frameworks */,
+				FE4F754327EA66AF00484934 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MCNN macOS";
+			productName = "MCNN macOS";
+			productReference = FE4F754527EA66AF00484934 /* MCNN.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FE4F752727EA669A00484934 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1320;
+				LastUpgradeCheck = 1320;
+				TargetAttributes = {
+					FE4F753327EA66AF00484934 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+					FE4F754427EA66AF00484934 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+				};
+			};
+			buildConfigurationList = FE4F752A27EA669A00484934 /* Build configuration list for PBXProject "MCNN" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FE4F752627EA669A00484934;
+			productRefGroup = FE4F753527EA66AF00484934 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FE4F753327EA66AF00484934 /* MCNN iOS */,
+				FE4F754427EA66AF00484934 /* MCNN macOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FE4F753227EA66AF00484934 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE4F755327EA66AF00484934 /* ShaderTypes.h in Resources */,
+				FE4F753D27EA66AF00484934 /* Main.storyboard in Resources */,
+				FE4F754027EA66AF00484934 /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE4F754327EA66AF00484934 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE4F755427EA66AF00484934 /* ShaderTypes.h in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FE4F753027EA66AF00484934 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE4F754F27EA66AF00484934 /* Shaders.metal in Sources */,
+				FE4F756B27ECF57F00484934 /* Tensor.swift in Sources */,
+				FE4F757827ED2CE800484934 /* MTLBundle.swift in Sources */,
+				FE4F756D27ED1FCD00484934 /* LinearLayer.swift in Sources */,
+				FE4F757227ED26CF00484934 /* ForwardableProtocol.swift in Sources */,
+				FE4F753827EA66AF00484934 /* AppDelegate.swift in Sources */,
+				FE4F756727ECF11C00484934 /* Network.swift in Sources */,
+				FE4F756327EA6BAF00484934 /* BenchmarkViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE4F754127EA66AF00484934 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE4F755027EA66AF00484934 /* Shaders.metal in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		FE4F753B27EA66AF00484934 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FE4F753C27EA66AF00484934 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		FE4F753E27EA66AF00484934 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FE4F753F27EA66AF00484934 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FE4F755727EA66AF00484934 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		FE4F755827EA66AF00484934 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		FE4F755A27EA66AF00484934 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y87F2QX298;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "cmu-ece.MCNN";
+				PRODUCT_NAME = MCNN;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "MCNN Shared/ShaderTypes.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FE4F755B27EA66AF00484934 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y87F2QX298;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "cmu-ece.MCNN";
+				PRODUCT_NAME = MCNN;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "MCNN Shared/ShaderTypes.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FE4F755D27EA66AF00484934 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "MCNN macOS/MCNN_macOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y87F2QX298;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "cmu-ece.MCNN";
+				PRODUCT_NAME = MCNN;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "MCNN Shared/ShaderTypes.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		FE4F755E27EA66AF00484934 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "MCNN macOS/MCNN_macOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y87F2QX298;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "cmu-ece.MCNN";
+				PRODUCT_NAME = MCNN;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "MCNN Shared/ShaderTypes.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FE4F752A27EA669A00484934 /* Build configuration list for PBXProject "MCNN" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE4F755727EA66AF00484934 /* Debug */,
+				FE4F755827EA66AF00484934 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FE4F755927EA66AF00484934 /* Build configuration list for PBXNativeTarget "MCNN iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE4F755A27EA66AF00484934 /* Debug */,
+				FE4F755B27EA66AF00484934 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FE4F755C27EA66AF00484934 /* Build configuration list for PBXNativeTarget "MCNN macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE4F755D27EA66AF00484934 /* Debug */,
+				FE4F755E27EA66AF00484934 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FE4F752727EA669A00484934 /* Project object */;
+}
