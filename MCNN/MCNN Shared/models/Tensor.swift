@@ -45,4 +45,32 @@ public class Tensor<T>: CustomStringConvertible {
         }
         data[realIdx] = value
     }
+    
+    public func printData() {
+        Tensor<T>.printDataHelper(arr: data, shape: shape, dimIdx: 0, arrDimStart: 0)
+    }
+    
+    private static func printDataHelper(arr: [T], shape: [Int], dimIdx: Int, arrDimStart: Int) -> Int {
+        var indent: String = ""
+        for _ in 0..<dimIdx {
+            indent += "    "
+        }
+
+        if (dimIdx == shape.count - 1) {
+            print("\(indent)[", terminator: "")
+            for i in 0..<shape[dimIdx] {
+                print("\(arr[arrDimStart + i]), ", terminator: "")
+            }
+            print("],")
+            return shape[dimIdx]
+        }
+        var arrShift = 0
+        for _ in 0..<shape[dimIdx] {
+            print("\(indent)[")
+            arrShift += printDataHelper(arr: arr, shape: shape, dimIdx: dimIdx + 1,
+                                        arrDimStart: arrDimStart + arrShift)
+            print("\(indent)],")
+        }
+        return arrShift
+    }
 }

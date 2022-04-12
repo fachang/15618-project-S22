@@ -22,8 +22,13 @@ class BenchmarkViewController: UIViewController {
     }
     
     @IBAction func runBenchmark(sender: UIButton) {
+        // runLinearNetworkBenchmark()
+        runConvNetworkBenchmark()
+    }
+    
+    private func runLinearNetworkBenchmark() {
         var startTime = DispatchTime.now()
-        let network: Network = Network()
+        let network: TestLinearNetwork = TestLinearNetwork()
         let initElapsedTime = Double(
                                     DispatchTime.now().uptimeNanoseconds -
                                     startTime.uptimeNanoseconds) / 1000000000;
@@ -35,8 +40,29 @@ class BenchmarkViewController: UIViewController {
                                     DispatchTime.now().uptimeNanoseconds -
                                     startTime.uptimeNanoseconds) / 1000000000;
 
+        forwardResult.printData()
         benchmarkTextLabel.text =
-            "Result:\n\(forwardResult)\n\n" +
+            "Metrics:\n" +
+            "Init Elapsed Time: \(initElapsedTime) sec\n" +
+            "Forward Elapsed Time: \(forwardElapsedTime) sec\n";
+    }
+    
+    private func runConvNetworkBenchmark() {
+        var startTime = DispatchTime.now()
+        let network: TestConvNetwork = TestConvNetwork()
+        let initElapsedTime = Double(
+                                    DispatchTime.now().uptimeNanoseconds -
+                                    startTime.uptimeNanoseconds) / 1000000000;
+        
+        startTime = DispatchTime.now()
+        let input: Tensor<Float16> = Tensor<Float16>(shape: [2, 3, 5, 5], initValue: 1)
+        let forwardResult: Tensor<Float16> = network.forward(input: input)
+        let forwardElapsedTime = Double(
+                                    DispatchTime.now().uptimeNanoseconds -
+                                    startTime.uptimeNanoseconds) / 1000000000;
+
+        forwardResult.printData()
+        benchmarkTextLabel.text =
             "Metrics:\n" +
             "Init Elapsed Time: \(initElapsedTime) sec\n" +
             "Forward Elapsed Time: \(forwardElapsedTime) sec\n";

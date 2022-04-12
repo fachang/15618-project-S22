@@ -10,55 +10,90 @@ import Metal
 
 public class Conv2DLayer: NetworkModuleProtocol {
     private let mtlBundle: MTLBundle
-    private let nInputFeatures: Int
-    private let nOutputFeatures: Int
+    private let nInputChannels: Int
+    private let nOutputChannels: Int
     private let gpu: Bool
-    private var params: Tensor<DataType>
     
-    public init(mtlBundle: MTLBundle, nInputFeatures: Int, nOutputFeatures: Int, gpu: Bool) {
+    private let kernelSize: Int
+    private let strideHeight: Int
+    private let strideWidth: Int
+    private let padding: Int
+    private let paddingMode: PaddingMode
+    
+    private let kernels: Tensor<DataType>
+    private let bias: Tensor<DataType>?
+    
+    public init(mtlBundle: MTLBundle, nInputChannels: Int, nOutputChannels: Int, bias: Bool,
+                kernelSize: Int, strideHeight: Int, strideWidth: Int,
+                padding: Int, paddingMode: PaddingMode, gpu: Bool) {
         self.mtlBundle = mtlBundle
-        self.nInputFeatures = nInputFeatures
-        self.nOutputFeatures = nOutputFeatures
+        self.nInputChannels = nInputChannels
+        self.nOutputChannels = nOutputChannels
         self.gpu = gpu
         
-        self.params = Tensor<DataType>(shape: [nInputFeatures, nOutputFeatures], initValue: 1)
+        self.kernelSize = kernelSize
+        self.strideHeight = strideHeight
+        self.strideWidth = strideWidth
+        self.padding = padding
+        self.paddingMode = paddingMode
+        
+        self.kernels = Tensor<DataType>(
+            shape: [nOutputChannels, nInputChannels, kernelSize, kernelSize], initValue: 1)
+        self.bias = (bias) ? Tensor<DataType>(shape: [1, nOutputChannels], initValue: 1) : nil
     }
     
     public func forward(input: Tensor<DataType>) -> Tensor<DataType> {
         if (gpu) {
-            return gpuForward(input: input);
+            return cpuForward(input: input)
         } else {
-            return cpuForward(input: input);
+            return cpuForward(input: input)
         }
     }
     
     private func cpuForward(input: Tensor<DataType>) -> Tensor<DataType> {
-        return TensorUtilsCPU.matMul(t1: input, t2: params)
-    }
-    
-    private func gpuForward(input: Tensor<DataType>) -> Tensor<DataType> {
-        let cmdBuffer = mtlBundle.mtlCommandQueue.makeCommandBuffer()
-        let cmdEncoder = cmdBuffer?.makeComputeCommandEncoder()
-        
-        let mtlFunc = mtlBundle.mtlLibrary.makeFunction(name: "matmul")
-        
-        var computePipelineState: MTLComputePipelineState!
-        do {
-            computePipelineState = try mtlBundle.mtlDevice.makeComputePipelineState(function: mtlFunc!)
-        } catch {
-            print("Fail to create Pipeline.")
+        let inputShape: [Int] = input.getShape()
+        let batchSize: Int = inputShape[0]
+        let inputHeight: Int = inputShape[2]
+        let inputWidth: Int = inputShape[3]
+        let outputHeight: Int = Int(floor(Double(inputHeight + 2 * padding - kernelSize) / Double(strideHeight))) + 1
+        let outputWidth: Int = Int(floor(Double(inputWidth + 2 * padding - kernelSize) / Double(strideWidth))) + 1
+        let result: Tensor<DataType> = Tensor<DataType>(
+            shape: [batchSize, nOutputChannels, outputHeight, outputWidth],
+            initValue: DataType.zero);
+
+        for batchIdx in 0..<batchSize {
+            for outChannelIdx in 0..<nOutputChannels {
+                for i in 0..<outputHeight {
+                    for j in 0..<outputWidth {
+                        let inputHeightStart: Int = i * strideHeight - padding
+                        let inputWidthStart: Int = j * strideWidth - padding
+                        var tmpConv: DataType = DataType.zero
+                        for inChannelIdx in 0..<nInputChannels {
+                            for m in 0..<kernelSize {
+                                for n in 0..<kernelSize {
+                                    let inputM = inputHeightStart + m
+                                    let inputN = inputWidthStart + n
+                                    let tmpInput: DataType;
+                                    if (inputM >= 0 && inputM < inputHeight &&
+                                            inputN >= 0 && inputN < inputWidth) {
+                                        tmpInput = input.getData(
+                                            idx: [batchIdx, inChannelIdx, inputM, inputN])
+                                    } else {
+                                        // paddingMode == PaddingMode.zeros
+                                        tmpInput = DataType.zero
+                                    }
+                                    tmpConv += (
+                                        tmpInput * kernels.getData(idx: [outChannelIdx, inChannelIdx, m, n])
+                                    )
+                                }
+                            }
+                        }
+                        result.setData(idx: [batchIdx, outChannelIdx, i, j], value: tmpConv)
+                    }
+                }
+            }
         }
         
-        cmdEncoder?.setComputePipelineState(computePipelineState)
-        
-        let nthreadsPerBlock = MTLSize(width: 1, height: 1, depth: 1)
-        let nblocks = MTLSize(width: 1, height: 1, depth: 1)
-        cmdEncoder?.dispatchThreadgroups(nblocks, threadsPerThreadgroup: nthreadsPerBlock)
-        cmdEncoder?.endEncoding()
-
-        cmdBuffer?.commit()
-        cmdBuffer?.waitUntilCompleted()
-        return Tensor<DataType>(
-            shape: [input.getShape()[0], nOutputFeatures], initValue: DataType.zero)
+        return result
     }
 }
