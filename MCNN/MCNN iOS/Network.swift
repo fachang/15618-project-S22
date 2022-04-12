@@ -46,7 +46,10 @@ public class TestConvNetwork {
         self.layers = [
             Conv2DLayer(mtlBundle: self.mtlBundle, nInputChannels: 3, nOutputChannels: 2, bias: true,
                         kernelSize: 3, strideHeight: 2, strideWidth: 1,
-                        padding: 1, paddingMode: PaddingMode.zeros, gpu: false)
+                        padding: 1, paddingMode: PaddingMode.zeros, gpu: false),
+            MaxPool2DLayer(mtlBundle: self.mtlBundle,
+                        kernelSize: 2, strideHeight: 2, strideWidth: 1,
+                        padding: 1, gpu: false)
         ];
     }
     
