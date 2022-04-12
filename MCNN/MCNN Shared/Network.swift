@@ -18,8 +18,10 @@ public class Network {
         self.mtlBundle = MTLBundle();
         
         self.layers = [
-            LinearLayer(mtlBundle: self.mtlBundle, nInputFeatures: 3, nOutputFeatures: 5, gpu: false),
-            LinearLayer(mtlBundle: self.mtlBundle, nInputFeatures: 5, nOutputFeatures: 2, gpu: false),
+            LinearLayer(
+                mtlBundle: self.mtlBundle, nInputFeatures: 3, nOutputFeatures: 5, bias: true, gpu: false),
+            LinearLayer(
+                mtlBundle: self.mtlBundle, nInputFeatures: 5, nOutputFeatures: 2, bias: true, gpu: false),
         ];
     }
     

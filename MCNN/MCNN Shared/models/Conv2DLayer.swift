@@ -1,30 +1,27 @@
 //
-//  LinearLayer.swift
+//  Conv2DLayer.swift
 //  MCNN iOS
 //
-//  Created by BerthCloud Chou on 2022/3/24.
+//  Created by BerthCloud Chou on 2022/4/11.
 //
 
 import Foundation
 import Metal
 
-public class LinearLayer: NetworkModuleProtocol {
+public class Conv2DLayer: NetworkModuleProtocol {
     private let mtlBundle: MTLBundle
     private let nInputFeatures: Int
     private let nOutputFeatures: Int
     private let gpu: Bool
     private var params: Tensor<DataType>
-    private var bias: Tensor<DataType>?
     
-    public init(mtlBundle: MTLBundle, nInputFeatures: Int, nOutputFeatures: Int, bias: Bool,
-                gpu: Bool) {
+    public init(mtlBundle: MTLBundle, nInputFeatures: Int, nOutputFeatures: Int, gpu: Bool) {
         self.mtlBundle = mtlBundle
         self.nInputFeatures = nInputFeatures
         self.nOutputFeatures = nOutputFeatures
         self.gpu = gpu
         
         self.params = Tensor<DataType>(shape: [nInputFeatures, nOutputFeatures], initValue: 1)
-        self.bias = (bias) ? Tensor<DataType>(shape: [1, nOutputFeatures], initValue: 1) : nil
     }
     
     public func forward(input: Tensor<DataType>) -> Tensor<DataType> {
@@ -36,18 +33,7 @@ public class LinearLayer: NetworkModuleProtocol {
     }
     
     private func cpuForward(input: Tensor<DataType>) -> Tensor<DataType> {
-        let result: Tensor<DataType> = TensorUtilsCPU.matMul(t1: input, t2: params)
-        if bias != nil {
-            let batchSize: Int = result.getShape()[0]
-            for i in 0..<batchSize {
-                for j in 0..<nOutputFeatures {
-                    result.setData(
-                        idx: [i, j],
-                        value: result.getData(idx: [i, j]) + bias!.getData(idx: [0, j]))
-                }
-            }
-        }
-        return result
+        return TensorUtilsCPU.matMul(t1: input, t2: params)
     }
     
     private func gpuForward(input: Tensor<DataType>) -> Tensor<DataType> {

@@ -31,10 +31,18 @@ public class Tensor<T>: CustomStringConvertible {
     }
     
     public func getData(idx: [Int]) -> T {
-        return data[idx[0] * shape[1] + idx[1]]
+        var realIdx = idx[0]
+        for i in 1..<idx.count {
+            realIdx = (realIdx * shape[i] + idx[i])
+        }
+        return data[realIdx]
     }
     
     public func setData(idx: [Int], value: T) {
-        data[idx[0] * shape[1] + idx[1]] = value
+        var realIdx = idx[0]
+        for i in 1..<idx.count {
+            realIdx = (realIdx * shape[i] + idx[i])
+        }
+        data[realIdx] = value
     }
 }
