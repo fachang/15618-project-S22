@@ -27,18 +27,4 @@ struct TensorUtilsCPU<DataType: AdditiveArithmetic & Numeric> {
         }
         return result
     }
-    
-    static func addRow(t: inout Tensor<DataType>, row: Tensor<DataType>) {
-        let tShape: [Int] = t.getShape()
-        let rowShape: [Int] = row.getShape()
-        assert(rowShape.count == 2 && rowShape[0] == 1 &&
-               tShape[tShape.count - 1] == rowShape[1])
-        for j in 0..<rowShape[1] {
-            row.getData(idx: [0, j])
-        }
-        for dim in 0..<tShape.count {
-            
-        }
-
-    }
 }

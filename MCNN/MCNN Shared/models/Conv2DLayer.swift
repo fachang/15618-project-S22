@@ -88,6 +88,9 @@ public class Conv2DLayer: NetworkModuleProtocol {
                                 }
                             }
                         }
+                        if (bias != nil) {
+                            tmpConv += bias!.getData(idx: [0, outChannelIdx])
+                        }
                         result.setData(idx: [batchIdx, outChannelIdx, i, j], value: tmpConv)
                     }
                 }
