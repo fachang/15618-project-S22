@@ -29,7 +29,8 @@ class BenchmarkViewController: UIViewController {
                                     startTime.uptimeNanoseconds) / 1000000000;
         
         startTime = DispatchTime.now()
-        let forwardResult: Tensor = network.forward(input: Tensor(nDim: 5))
+        let forwardResult: Tensor<Float16> = network.forward(
+                                    input: Tensor<Float16>(shape: [10, 3], initValue: 1))
         let forwardElapsedTime = Double(
                                     DispatchTime.now().uptimeNanoseconds -
                                     startTime.uptimeNanoseconds) / 1000000000;

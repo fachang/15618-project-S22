@@ -8,18 +8,35 @@
 import Foundation
 import Metal
 
-public class LinearLayer: ForwardableProtocol {
+public class LinearLayer: NetworkModuleProtocol {
     private let mtlBundle: MTLBundle
     private let nInputFeatures: Int
     private let nOutputFeatures: Int
+    private let gpu: Bool
+    private var params: Tensor<DataType>
     
-    public init(mtlBundle: MTLBundle, nInputFeatures: Int, nOutputFeatures: Int) {
+    public init(mtlBundle: MTLBundle, nInputFeatures: Int, nOutputFeatures: Int, gpu: Bool) {
         self.mtlBundle = mtlBundle
         self.nInputFeatures = nInputFeatures
         self.nOutputFeatures = nOutputFeatures
+        self.gpu = gpu
+        
+        self.params = Tensor<DataType>(shape: [nInputFeatures, nOutputFeatures], initValue: 1)
     }
     
-    public func forward(input: Tensor) -> Tensor {
+    public func forward(input: Tensor<DataType>) -> Tensor<DataType> {
+        if (gpu) {
+            return gpuForward(input: input);
+        } else {
+            return cpuForward(input: input);
+        }
+    }
+    
+    private func cpuForward(input: Tensor<DataType>) -> Tensor<DataType> {
+        return TensorUtilsCPU.matMul(t1: input, t2: params)
+    }
+    
+    private func gpuForward(input: Tensor<DataType>) -> Tensor<DataType> {
         let cmdBuffer = mtlBundle.mtlCommandQueue.makeCommandBuffer()
         let cmdEncoder = cmdBuffer?.makeComputeCommandEncoder()
         
@@ -41,6 +58,7 @@ public class LinearLayer: ForwardableProtocol {
 
         cmdBuffer?.commit()
         cmdBuffer?.waitUntilCompleted()
-        return Tensor(nDim: nOutputFeatures)
+        return Tensor<DataType>(
+            shape: [input.getShape()[0], nOutputFeatures], initValue: DataType.zero)
     }
 }

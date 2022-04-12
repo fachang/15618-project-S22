@@ -7,22 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FE03B83028038EE20015B1A7 /* TensorUtilsCPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B82F28038EE20015B1A7 /* TensorUtilsCPU.swift */; };
+		FE03B8342804F1850015B1A7 /* TensorBuilderCPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B8332804F1850015B1A7 /* TensorBuilderCPU.swift */; };
 		FE4F753827EA66AF00484934 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F753727EA66AF00484934 /* AppDelegate.swift */; };
 		FE4F753D27EA66AF00484934 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE4F753B27EA66AF00484934 /* Main.storyboard */; };
 		FE4F754027EA66AF00484934 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE4F753E27EA66AF00484934 /* LaunchScreen.storyboard */; };
 		FE4F754F27EA66AF00484934 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = FE4F752C27EA669C00484934 /* Shaders.metal */; };
-		FE4F755027EA66AF00484934 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = FE4F752C27EA669C00484934 /* Shaders.metal */; };
 		FE4F755327EA66AF00484934 /* ShaderTypes.h in Resources */ = {isa = PBXBuildFile; fileRef = FE4F752E27EA669C00484934 /* ShaderTypes.h */; };
-		FE4F755427EA66AF00484934 /* ShaderTypes.h in Resources */ = {isa = PBXBuildFile; fileRef = FE4F752E27EA669C00484934 /* ShaderTypes.h */; };
 		FE4F756327EA6BAF00484934 /* BenchmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756227EA6BAF00484934 /* BenchmarkViewController.swift */; };
 		FE4F756727ECF11C00484934 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756627ECF11B00484934 /* Network.swift */; };
 		FE4F756B27ECF57F00484934 /* Tensor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756A27ECF57E00484934 /* Tensor.swift */; };
 		FE4F756D27ED1FCD00484934 /* LinearLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756C27ED1FCA00484934 /* LinearLayer.swift */; };
-		FE4F757227ED26CF00484934 /* ForwardableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F757127ED26CF00484934 /* ForwardableProtocol.swift */; };
+		FE4F757227ED26CF00484934 /* NetworkModuleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F757127ED26CF00484934 /* NetworkModuleProtocol.swift */; };
 		FE4F757827ED2CE800484934 /* MTLBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F757727ED2CE800484934 /* MTLBundle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FE03B82F28038EE20015B1A7 /* TensorUtilsCPU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TensorUtilsCPU.swift; sourceTree = "<group>"; };
+		FE03B8332804F1850015B1A7 /* TensorBuilderCPU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TensorBuilderCPU.swift; sourceTree = "<group>"; };
 		FE4F752C27EA669C00484934 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		FE4F752E27EA669C00484934 /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
 		FE4F753427EA66AF00484934 /* MCNN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MCNN.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -34,7 +36,7 @@
 		FE4F756627ECF11B00484934 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		FE4F756A27ECF57E00484934 /* Tensor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tensor.swift; sourceTree = "<group>"; };
 		FE4F756C27ED1FCA00484934 /* LinearLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearLayer.swift; sourceTree = "<group>"; };
-		FE4F757127ED26CF00484934 /* ForwardableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardableProtocol.swift; sourceTree = "<group>"; };
+		FE4F757127ED26CF00484934 /* NetworkModuleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkModuleProtocol.swift; sourceTree = "<group>"; };
 		FE4F757727ED2CE800484934 /* MTLBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTLBundle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -56,6 +58,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FE03B82D28038EA80015B1A7 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				FE03B82E28038EC40015B1A7 /* cpu */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		FE03B82E28038EC40015B1A7 /* cpu */ = {
+			isa = PBXGroup;
+			children = (
+				FE03B82F28038EE20015B1A7 /* TensorUtilsCPU.swift */,
+				FE03B8332804F1850015B1A7 /* TensorBuilderCPU.swift */,
+			);
+			path = cpu;
+			sourceTree = "<group>";
+		};
 		FE4F752627EA669A00484934 = {
 			isa = PBXGroup;
 			children = (
@@ -68,10 +87,11 @@
 		FE4F752B27EA669C00484934 /* MCNN Shared */ = {
 			isa = PBXGroup;
 			children = (
-				FE4F757627ED2CCC00484934 /* utils */,
-				FE4F756927ECF54F00484934 /* models */,
-				FE4F752C27EA669C00484934 /* Shaders.metal */,
 				FE4F752E27EA669C00484934 /* ShaderTypes.h */,
+				FE4F752C27EA669C00484934 /* Shaders.metal */,
+				FE4F756927ECF54F00484934 /* models */,
+				FE4F757627ED2CCC00484934 /* utils */,
+				FE4F756627ECF11B00484934 /* Network.swift */,
 			);
 			path = "MCNN Shared";
 			sourceTree = "<group>";
@@ -99,8 +119,8 @@
 		FE4F756927ECF54F00484934 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				FE03B82D28038EA80015B1A7 /* utils */,
 				FE4F757027ED26B100484934 /* protocols */,
-				FE4F756627ECF11B00484934 /* Network.swift */,
 				FE4F756A27ECF57E00484934 /* Tensor.swift */,
 				FE4F756C27ED1FCA00484934 /* LinearLayer.swift */,
 			);
@@ -110,7 +130,7 @@
 		FE4F757027ED26B100484934 /* protocols */ = {
 			isa = PBXGroup;
 			children = (
-				FE4F757127ED26CF00484934 /* ForwardableProtocol.swift */,
+				FE4F757127ED26CF00484934 /* NetworkModuleProtocol.swift */,
 			);
 			path = protocols;
 			sourceTree = "<group>";
@@ -212,7 +232,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE4F755427EA66AF00484934 /* ShaderTypes.h in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,11 +244,13 @@
 			files = (
 				FE4F754F27EA66AF00484934 /* Shaders.metal in Sources */,
 				FE4F756B27ECF57F00484934 /* Tensor.swift in Sources */,
+				FE03B83028038EE20015B1A7 /* TensorUtilsCPU.swift in Sources */,
 				FE4F757827ED2CE800484934 /* MTLBundle.swift in Sources */,
 				FE4F756D27ED1FCD00484934 /* LinearLayer.swift in Sources */,
-				FE4F757227ED26CF00484934 /* ForwardableProtocol.swift in Sources */,
+				FE4F757227ED26CF00484934 /* NetworkModuleProtocol.swift in Sources */,
 				FE4F753827EA66AF00484934 /* AppDelegate.swift in Sources */,
 				FE4F756727ECF11C00484934 /* Network.swift in Sources */,
+				FE03B8342804F1850015B1A7 /* TensorBuilderCPU.swift in Sources */,
 				FE4F756327EA6BAF00484934 /* BenchmarkViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -238,7 +259,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE4F755027EA66AF00484934 /* Shaders.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

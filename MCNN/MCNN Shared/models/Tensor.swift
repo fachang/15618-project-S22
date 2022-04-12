@@ -7,17 +7,34 @@
 
 import Foundation
 
-public class Tensor: CustomStringConvertible {
+public class Tensor<T>: CustomStringConvertible {
     
-    public typealias DataType = Float32
-    
-    public var data: [DataType]
+    public var data: [T]
+    private var shape: [Int]
 
-    public init(nDim: Int) {
-        data = [DataType](repeating: 0, count: nDim )
+    public init(shape: [Int], initValue: T) {
+        let flattenSize: Int = shape.reduce(1, {result, i in return result * i})
+        self.data = [T](repeating: initValue, count: flattenSize)
+        self.shape = shape
     }
     
     public var description: String {
-        return data.description
+        return self.data.description
+    }
+    
+    public func reshape(shape: [Int]) {
+        self.shape = shape
+    }
+    
+    public func getShape() -> [Int] {
+        return self.shape
+    }
+    
+    public func getData(idx: [Int]) -> T {
+        return data[idx[0] * shape[1] + idx[1]]
+    }
+    
+    public func setData(idx: [Int], value: T) {
+        data[idx[0] * shape[1] + idx[1]] = value
     }
 }
