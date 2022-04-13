@@ -49,7 +49,8 @@ public class TestConvNetwork {
                         padding: 1, paddingMode: PaddingMode.zeros, gpu: false),
             MaxPool2DLayer(mtlBundle: self.mtlBundle,
                         kernelSize: 2, strideHeight: 2, strideWidth: 1,
-                        padding: 1, gpu: false)
+                        padding: 1, gpu: false),
+            ReLu(gpu: false),
         ];
     }
     
