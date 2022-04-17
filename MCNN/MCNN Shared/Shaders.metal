@@ -16,4 +16,12 @@ using namespace metal;
 kernel void matmul() {
     return;
 }
-
+kernel void reluForward(const device float *input [[ buffer(0) ]],
+                        device float *output [[ buffer(1) ]],
+                        uint idx [[ thread_position_in_grid ]]) {
+    if(input[idx] <= 0) {
+        output[idx] = 0;
+    } else {
+        output[idx] = input[idx];
+    }
+}
