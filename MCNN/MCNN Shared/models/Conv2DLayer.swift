@@ -25,7 +25,8 @@ public class Conv2DLayer: NetworkModuleProtocol {
     
     public init(mtlBundle: MTLBundle, nInputChannels: Int, nOutputChannels: Int, bias: Bool,
                 kernelSize: Int, strideHeight: Int, strideWidth: Int,
-                padding: Int, paddingMode: PaddingMode, gpu: Bool) {
+                padding: Int, paddingMode: PaddingMode, gpu: Bool,
+                initKernels: Tensor<DataType>? = nil, initBias: Tensor<DataType>? = nil) {
         self.mtlBundle = mtlBundle
         self.nInputChannels = nInputChannels
         self.nOutputChannels = nOutputChannels
@@ -37,9 +38,24 @@ public class Conv2DLayer: NetworkModuleProtocol {
         self.padding = padding
         self.paddingMode = paddingMode
         
-        self.kernels = Tensor<DataType>(
-            shape: [nOutputChannels, nInputChannels, kernelSize, kernelSize], initValue: 1)
-        self.bias = (bias) ? Tensor<DataType>(shape: [1, nOutputChannels], initValue: 1) : nil
+        if (initKernels == nil) {
+            self.kernels = Tensor<DataType>(
+                shape: [nOutputChannels, nInputChannels, kernelSize, kernelSize], initValue: 1)
+        } else {
+            self.kernels = initKernels!
+            self.kernels.reshape(shape: [nOutputChannels, nInputChannels, kernelSize, kernelSize])
+        }
+        
+        if (!bias) {
+            self.bias = nil;
+        } else {
+            if (initBias == nil) {
+                self.bias = Tensor<DataType>(shape: [1, nOutputChannels], initValue: 1)
+            } else {
+                self.bias = initBias!
+                self.bias?.reshape(shape: [1, nOutputChannels])
+            }
+        }
     }
     
     public func forward(input: Tensor<DataType>) -> Tensor<DataType> {

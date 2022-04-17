@@ -18,11 +18,21 @@ public class Tensor<T>: CustomStringConvertible {
         self.shape = shape
     }
     
+    public init(shape: [Int], data: [T]) {
+        let flattenSize: Int = shape.reduce(1, {result, i in return result * i})
+        assert(flattenSize == data.count)
+        self.data = data
+        self.shape = shape
+    }
+    
     public var description: String {
         return self.data.description
     }
     
     public func reshape(shape: [Int]) {
+        let oldFlattenSize: Int = self.shape.reduce(1, {result, i in return result * i})
+        let newFlattenSize: Int = shape.reduce(1, {result, i in return result * i})
+        assert(oldFlattenSize == newFlattenSize)
         self.shape = shape
     }
     
