@@ -19,9 +19,11 @@ public class TestLinearNetwork {
         
         self.layers = [
             LinearLayer(
-                mtlBundle: self.mtlBundle, nInputFeatures: 3, nOutputFeatures: 5, bias: true, gpu: false),
+                mtlBundle: self.mtlBundle, nInputFeatures: 3, nOutputFeatures: 2, bias: true, gpu: true),
+            /*
             LinearLayer(
-                mtlBundle: self.mtlBundle, nInputFeatures: 5, nOutputFeatures: 2, bias: true, gpu: false),
+                mtlBundle: self.mtlBundle, nInputFeatures: 5, nOutputFeatures: 2, bias: true, gpu: true),
+             */
         ];
     }
     

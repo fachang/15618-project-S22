@@ -20,5 +20,12 @@
 
 #include <simd/simd.h>
 
+struct LinearLayerParams {
+    uint batch_size;
+    uint n_input_channel;
+    uint n_output_channel;
+    bool bias;
+};
+
 #endif /* ShaderTypes_h */
 

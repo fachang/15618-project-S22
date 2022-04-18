@@ -24,9 +24,9 @@ class BenchmarkViewController: UIViewController {
     }
     
     @IBAction func runBenchmark(sender: UIButton) {
-        // runLinearNetworkBenchmark()
+        runLinearNetworkBenchmark()
         // runConvNetworkBenchmark()
-        runBigConvNetworkBenchmark()
+        // runBigConvNetworkBenchmark()
     }
     
     private func runLinearNetworkBenchmark() {
