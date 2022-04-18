@@ -12,8 +12,6 @@
 		FE03B839280511890015B1A7 /* PaddingMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B838280511890015B1A7 /* PaddingMode.swift */; };
 		FE03B83B280634660015B1A7 /* MaxPool2DLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B83A280634650015B1A7 /* MaxPool2DLayer.swift */; };
 		FE03B83D28066FC90015B1A7 /* ReLu.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B83C28066FC80015B1A7 /* ReLu.swift */; };
-		FE03B840280CC7A10015B1A7 /* LinearLayerParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B83F280CC7A10015B1A7 /* LinearLayerParams.swift */; };
-		FE03B842280DCCF40015B1A7 /* ShaderTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B841280DCCF30015B1A7 /* ShaderTypes.swift */; };
 		FE03B844280DD93C0015B1A7 /* MTLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B843280DD93C0015B1A7 /* MTLUtils.swift */; };
 		FE4F753827EA66AF00484934 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F753727EA66AF00484934 /* AppDelegate.swift */; };
 		FE4F753D27EA66AF00484934 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE4F753B27EA66AF00484934 /* Main.storyboard */; };
@@ -21,7 +19,7 @@
 		FE4F754F27EA66AF00484934 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = FE4F752C27EA669C00484934 /* Shaders.metal */; };
 		FE4F755327EA66AF00484934 /* ShaderTypes.h in Resources */ = {isa = PBXBuildFile; fileRef = FE4F752E27EA669C00484934 /* ShaderTypes.h */; };
 		FE4F756327EA6BAF00484934 /* BenchmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756227EA6BAF00484934 /* BenchmarkViewController.swift */; };
-		FE4F756727ECF11C00484934 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756627ECF11B00484934 /* Network.swift */; };
+		FE4F756727ECF11C00484934 /* Networks.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756627ECF11B00484934 /* Networks.swift */; };
 		FE4F756B27ECF57F00484934 /* Tensor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756A27ECF57E00484934 /* Tensor.swift */; };
 		FE4F756D27ED1FCD00484934 /* LinearLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756C27ED1FCA00484934 /* LinearLayer.swift */; };
 		FE4F757227ED26CF00484934 /* NetworkModuleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F757127ED26CF00484934 /* NetworkModuleProtocol.swift */; };
@@ -34,8 +32,6 @@
 		FE03B838280511890015B1A7 /* PaddingMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingMode.swift; sourceTree = "<group>"; };
 		FE03B83A280634650015B1A7 /* MaxPool2DLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxPool2DLayer.swift; sourceTree = "<group>"; };
 		FE03B83C28066FC80015B1A7 /* ReLu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReLu.swift; sourceTree = "<group>"; };
-		FE03B83F280CC7A10015B1A7 /* LinearLayerParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearLayerParams.swift; sourceTree = "<group>"; };
-		FE03B841280DCCF30015B1A7 /* ShaderTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaderTypes.swift; sourceTree = "<group>"; };
 		FE03B843280DD93C0015B1A7 /* MTLUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTLUtils.swift; sourceTree = "<group>"; };
 		FE4F752C27EA669C00484934 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		FE4F752E27EA669C00484934 /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
@@ -45,7 +41,7 @@
 		FE4F753F27EA66AF00484934 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FE4F754527EA66AF00484934 /* MCNN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MCNN.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE4F756227EA6BAF00484934 /* BenchmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkViewController.swift; sourceTree = "<group>"; };
-		FE4F756627ECF11B00484934 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		FE4F756627ECF11B00484934 /* Networks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networks.swift; sourceTree = "<group>"; };
 		FE4F756A27ECF57E00484934 /* Tensor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tensor.swift; sourceTree = "<group>"; };
 		FE4F756C27ED1FCA00484934 /* LinearLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearLayer.swift; sourceTree = "<group>"; };
 		FE4F757127ED26CF00484934 /* NetworkModuleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkModuleProtocol.swift; sourceTree = "<group>"; };
@@ -70,22 +66,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		FE03B82D28038EA80015B1A7 /* utils */ = {
-			isa = PBXGroup;
-			children = (
-				FE03B82E28038EC40015B1A7 /* cpu */,
-			);
-			path = utils;
-			sourceTree = "<group>";
-		};
-		FE03B82E28038EC40015B1A7 /* cpu */ = {
-			isa = PBXGroup;
-			children = (
-				FE03B82F28038EE20015B1A7 /* TensorUtilsCPU.swift */,
-			);
-			path = cpu;
-			sourceTree = "<group>";
-		};
 		FE03B837280511700015B1A7 /* enums */ = {
 			isa = PBXGroup;
 			children = (
@@ -94,17 +74,44 @@
 			path = enums;
 			sourceTree = "<group>";
 		};
-		FE03B83E280CC77B0015B1A7 /* dtos */ = {
+		FE03B84A280DE86F0015B1A7 /* metal */ = {
 			isa = PBXGroup;
 			children = (
-				FE03B83F280CC7A10015B1A7 /* LinearLayerParams.swift */,
+				FE03B84B280DE87E0015B1A7 /* libs */,
 			);
-			path = dtos;
+			path = metal;
+			sourceTree = "<group>";
+		};
+		FE03B84B280DE87E0015B1A7 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				FE4F752E27EA669C00484934 /* ShaderTypes.h */,
+				FE4F752C27EA669C00484934 /* Shaders.metal */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		FE03B84C280DE93D0015B1A7 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				FE03B84A280DE86F0015B1A7 /* metal */,
+				FE4F756927ECF54F00484934 /* models */,
+			);
+			path = core;
+			sourceTree = "<group>";
+		};
+		FE03B84D280DEBC30015B1A7 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				FE4F756627ECF11B00484934 /* Networks.swift */,
+			);
+			path = models;
 			sourceTree = "<group>";
 		};
 		FE4F752627EA669A00484934 = {
 			isa = PBXGroup;
 			children = (
+				FE03B84C280DE93D0015B1A7 /* core */,
 				FE4F752B27EA669C00484934 /* MCNN Shared */,
 				FE4F753627EA66AF00484934 /* MCNN iOS */,
 				FE4F753527EA66AF00484934 /* Products */,
@@ -114,11 +121,8 @@
 		FE4F752B27EA669C00484934 /* MCNN Shared */ = {
 			isa = PBXGroup;
 			children = (
-				FE4F752E27EA669C00484934 /* ShaderTypes.h */,
-				FE4F752C27EA669C00484934 /* Shaders.metal */,
-				FE4F757727ED2CE800484934 /* MTLCommons.swift */,
-				FE4F756927ECF54F00484934 /* models */,
-				FE4F757627ED2CCC00484934 /* utils */,
+				FE03B84D280DEBC30015B1A7 /* models */,
+				FE4F756227EA6BAF00484934 /* BenchmarkViewController.swift */,
 			);
 			path = "MCNN Shared";
 			sourceTree = "<group>";
@@ -135,11 +139,9 @@
 		FE4F753627EA66AF00484934 /* MCNN iOS */ = {
 			isa = PBXGroup;
 			children = (
-				FE4F756627ECF11B00484934 /* Network.swift */,
 				FE4F753727EA66AF00484934 /* AppDelegate.swift */,
 				FE4F753B27EA66AF00484934 /* Main.storyboard */,
 				FE4F753E27EA66AF00484934 /* LaunchScreen.storyboard */,
-				FE4F756227EA6BAF00484934 /* BenchmarkViewController.swift */,
 			);
 			path = "MCNN iOS";
 			sourceTree = "<group>";
@@ -147,15 +149,15 @@
 		FE4F756927ECF54F00484934 /* models */ = {
 			isa = PBXGroup;
 			children = (
-				FE03B83E280CC77B0015B1A7 /* dtos */,
+				FE4F757727ED2CE800484934 /* MTLCommons.swift */,
 				FE03B837280511700015B1A7 /* enums */,
-				FE03B82D28038EA80015B1A7 /* utils */,
 				FE4F757027ED26B100484934 /* protocols */,
 				FE4F756A27ECF57E00484934 /* Tensor.swift */,
 				FE4F756C27ED1FCA00484934 /* LinearLayer.swift */,
 				FE03B83C28066FC80015B1A7 /* ReLu.swift */,
 				FE03B8352804FD990015B1A7 /* Conv2DLayer.swift */,
 				FE03B83A280634650015B1A7 /* MaxPool2DLayer.swift */,
+				FE4F757627ED2CCC00484934 /* utils */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -163,7 +165,6 @@
 		FE4F757027ED26B100484934 /* protocols */ = {
 			isa = PBXGroup;
 			children = (
-				FE03B841280DCCF30015B1A7 /* ShaderTypes.swift */,
 				FE4F757127ED26CF00484934 /* NetworkModuleProtocol.swift */,
 			);
 			path = protocols;
@@ -172,6 +173,7 @@
 		FE4F757627ED2CCC00484934 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				FE03B82F28038EE20015B1A7 /* TensorUtilsCPU.swift */,
 				FE03B843280DD93C0015B1A7 /* MTLUtils.swift */,
 			);
 			path = utils;
@@ -282,15 +284,13 @@
 				FE03B83D28066FC90015B1A7 /* ReLu.swift in Sources */,
 				FE03B83028038EE20015B1A7 /* TensorUtilsCPU.swift in Sources */,
 				FE4F757827ED2CE800484934 /* MTLCommons.swift in Sources */,
-				FE03B842280DCCF40015B1A7 /* ShaderTypes.swift in Sources */,
 				FE03B844280DD93C0015B1A7 /* MTLUtils.swift in Sources */,
-				FE03B840280CC7A10015B1A7 /* LinearLayerParams.swift in Sources */,
 				FE4F756D27ED1FCD00484934 /* LinearLayer.swift in Sources */,
 				FE4F757227ED26CF00484934 /* NetworkModuleProtocol.swift in Sources */,
 				FE4F753827EA66AF00484934 /* AppDelegate.swift in Sources */,
 				FE03B8362804FD990015B1A7 /* Conv2DLayer.swift in Sources */,
 				FE03B839280511890015B1A7 /* PaddingMode.swift in Sources */,
-				FE4F756727ECF11C00484934 /* Network.swift in Sources */,
+				FE4F756727ECF11C00484934 /* Networks.swift in Sources */,
 				FE4F756327EA6BAF00484934 /* BenchmarkViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -438,8 +438,8 @@
 		FE4F755A27EA66AF00484934 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y87F2QX298;
@@ -460,7 +460,7 @@
 				PRODUCT_NAME = MCNN;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "MCNN Shared/ShaderTypes.h";
+				SWIFT_OBJC_BRIDGING_HEADER = core/metal/libs/ShaderTypes.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -469,8 +469,8 @@
 		FE4F755B27EA66AF00484934 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y87F2QX298;
@@ -491,7 +491,7 @@
 				PRODUCT_NAME = MCNN;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "MCNN Shared/ShaderTypes.h";
+				SWIFT_OBJC_BRIDGING_HEADER = core/metal/libs/ShaderTypes.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

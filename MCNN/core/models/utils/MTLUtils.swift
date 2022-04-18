@@ -8,14 +8,14 @@
 import Foundation
 import Metal
 
-public class MTLUtils {
-    public static func copyToGPU(dataPtr: UnsafeRawPointer, size: Int) -> MTLBuffer? {
+internal class MTLUtils {
+    internal static func copyToGPU(dataPtr: UnsafeRawPointer, size: Int) -> MTLBuffer? {
         return MTLCommons.mtlDevice.makeBuffer(
             bytes: dataPtr, length: size,
             options: MTLResourceOptions.cpuCacheModeWriteCombined)
     }
     
-    public static func addComputePipeline(cmdEncoder: MTLComputeCommandEncoder,
+    internal static func addComputePipeline(cmdEncoder: MTLComputeCommandEncoder,
                                           kernelLibrary: MTLLibrary, kernelFuncName: String) -> Bool {
         let kernelFunc = kernelLibrary.makeFunction(name: kernelFuncName)
         if (kernelFunc == nil) {

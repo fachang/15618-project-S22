@@ -18,8 +18,6 @@
 #import <Foundation/Foundation.h>
 #endif
 
-#include <simd/simd.h>
-
 struct LinearLayerParams {
     uint batch_size;
     uint n_input_channel;

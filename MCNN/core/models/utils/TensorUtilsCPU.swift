@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct TensorUtilsCPU<DataType: AdditiveArithmetic & Numeric> {
-    static func matMul(t1: Tensor<DataType>, t2: Tensor<DataType>) -> Tensor<DataType> {
+public struct TensorUtilsCPU<DataType: AdditiveArithmetic & Numeric> {
+    public static func matMul(t1: Tensor<DataType>, t2: Tensor<DataType>) -> Tensor<DataType> {
         let t1Shape: [Int] = t1.getShape()
         let t2Shape: [Int] = t2.getShape()
         assert(t1Shape.count == 2 && t2Shape.count == 2 && t1Shape[1] == t2Shape[0])
