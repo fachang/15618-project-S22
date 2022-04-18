@@ -64,7 +64,7 @@ public class Tensor<T>: CustomStringConvertible {
     }
     
     public func copyToGPU() {
-        dataGPU = MTLBundle.mtlDevice.makeBuffer(
+        dataGPU = MTLCommons.mtlDevice.makeBuffer(
             bytes: data, length: getSize(),
             options: MTLResourceOptions.cpuCacheModeWriteCombined)
     }

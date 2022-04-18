@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct LinearLayerParams {
+public struct LinearLayerParams: ShaderTypes {
     let batch_size: UInt32;
     let n_input_channel: UInt32;
     let n_output_channel: UInt32;
