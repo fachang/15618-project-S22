@@ -6,23 +6,31 @@
 //
 
 import Foundation
+import Metal
 
 public class Tensor<T>: CustomStringConvertible {
     
-    public var data: [T]
+    internal var data: [T]
     private var shape: [Int]
 
-    public init(shape: [Int], initValue: T) {
+    private let mtlDevice: MTLDevice?
+    internal var dataGPU: MTLBuffer?
+
+    public init(shape: [Int], initValue: T, _ mtlDevice: MTLDevice?) {
         let flattenSize: Int = shape.reduce(1, {result, i in return result * i})
         self.data = [T](repeating: initValue, count: flattenSize)
         self.shape = shape
+
+        self.mtlDevice = mtlDevice
     }
     
-    public init(shape: [Int], data: [T]) {
+    public init(shape: [Int], data: [T], _ mtlDevice: MTLDevice?) {
         let flattenSize: Int = shape.reduce(1, {result, i in return result * i})
         assert(flattenSize == data.count)
         self.data = data
         self.shape = shape
+        
+        self.mtlDevice = mtlDevice
     }
     
     public var description: String {
@@ -56,6 +64,29 @@ public class Tensor<T>: CustomStringConvertible {
         data[realIdx] = value
     }
     
+    private func getSize() -> Int {
+        return MemoryLayout<T>.stride * data.count;
+    }
+    
+    public func copyToGPU() {
+        if (mtlDevice == nil) {
+            return;
+        }
+        dataGPU = mtlDevice!.makeBuffer(
+            bytes: data, length: getSize(),
+            options: MTLResourceOptions.cpuCacheModeWriteCombined)
+    }
+    
+    public func copyToCPU() {
+        if (dataGPU == nil) {
+            return;
+        }
+        let dataSize: Int = getSize()
+        let dataBufGPU = NSData(
+            bytesNoCopy: dataGPU!.contents(), length: dataSize, freeWhenDone: false)
+        dataBufGPU.getBytes(&data, length: dataSize);
+    }
+    
     public func printData() {
         Tensor<T>.printDataHelper(arr: data, shape: shape, dimIdx: 0, arrDimStart: 0)
     }
@@ -82,5 +113,9 @@ public class Tensor<T>: CustomStringConvertible {
             print("\(indent)],")
         }
         return arrShift
+    }
+    
+    public func getMtlDevice() -> MTLDevice? {
+        return self.mtlDevice;
     }
 }

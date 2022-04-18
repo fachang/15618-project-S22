@@ -14,7 +14,7 @@ struct TensorUtilsCPU<DataType: AdditiveArithmetic & Numeric> {
         assert(t1Shape.count == 2 && t2Shape.count == 2 && t1Shape[1] == t2Shape[0])
         
         let result: Tensor<DataType> = Tensor<DataType>(
-            shape: [t1Shape[0], t2Shape[1]], initValue: DataType.zero)
+            shape: [t1Shape[0], t2Shape[1]], initValue: DataType.zero, t1.getMtlDevice())
 
         for i in 0..<t1Shape[0] {
             for j in 0..<t2Shape[1] {

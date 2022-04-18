@@ -13,9 +13,15 @@ public class MTLBundle {
     internal let mtlCommandQueue: MTLCommandQueue!
     internal let mtlLibrary: MTLLibrary!
     
-    public init() {
-        mtlDevice = MTLCreateSystemDefaultDevice()
+    public init(mtlDevice: MTLDevice) {
+        self.mtlDevice = mtlDevice
         mtlCommandQueue = mtlDevice.makeCommandQueue()
         mtlLibrary = mtlDevice.makeDefaultLibrary()
+    }
+    
+    public func copyToGPU(ptr: UnsafeRawPointer, size: Int) -> MTLBuffer? {
+        return mtlDevice.makeBuffer(
+            bytes: ptr, length: size,
+            options: MTLResourceOptions.cpuCacheModeWriteCombined)
     }
 }

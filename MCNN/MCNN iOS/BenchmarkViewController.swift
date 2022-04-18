@@ -16,11 +16,14 @@ class BenchmarkViewController: UIViewController {
     @IBOutlet var benchmarkTextLabel: UILabel!
     @IBOutlet var runBtn: UIButton!
 
+    private var mtlDevice: MTLDevice?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         benchmarkTextLabel.text = "CNN Forward Benchmark"
         runBtn.setTitle("RUN", for: .normal)
+        mtlDevice = MTLCreateSystemDefaultDevice()
     }
     
     @IBAction func runBenchmark(sender: UIButton) {
@@ -31,14 +34,18 @@ class BenchmarkViewController: UIViewController {
     
     private func runLinearNetworkBenchmark() {
         var startTime = DispatchTime.now()
-        let network: TestLinearNetwork = TestLinearNetwork()
+        let network: TestLinearNetwork = TestLinearNetwork(mtlDevice: mtlDevice!)
         let initElapsedTime = Double(
                                     DispatchTime.now().uptimeNanoseconds -
                                     startTime.uptimeNanoseconds) / 1000000000;
         
         startTime = DispatchTime.now()
-        let forwardResult: Tensor<DataType> = network.forward(
-                                    input: Tensor<DataType>(shape: [10, 3], initValue: 1))
+        
+        let input = Tensor<DataType>(shape: [10, 3], initValue: 1, mtlDevice)
+        input.copyToGPU()
+        let forwardResult: Tensor<DataType> = network.forward(input: input)
+        forwardResult.copyToCPU()
+        
         let forwardElapsedTime = Double(
                                     DispatchTime.now().uptimeNanoseconds -
                                     startTime.uptimeNanoseconds) / 1000000000;
@@ -52,13 +59,13 @@ class BenchmarkViewController: UIViewController {
     
     private func runConvNetworkBenchmark() {
         var startTime = DispatchTime.now()
-        let network: TestConvNetwork = TestConvNetwork()
+        let network: TestConvNetwork = TestConvNetwork(mtlDevice: mtlDevice!)
         let initElapsedTime = Double(
                                     DispatchTime.now().uptimeNanoseconds -
                                     startTime.uptimeNanoseconds) / 1000000000;
         
         startTime = DispatchTime.now()
-        let input: Tensor<DataType> = Tensor<DataType>(shape: [2, 3, 5, 5], initValue: 1)
+        let input: Tensor<DataType> = Tensor<DataType>(shape: [2, 3, 5, 5], initValue: 1, mtlDevice)
         let forwardResult: Tensor<DataType> = network.forward(input: input)
         let forwardElapsedTime = Double(
                                     DispatchTime.now().uptimeNanoseconds -
@@ -73,7 +80,7 @@ class BenchmarkViewController: UIViewController {
     
     private func runBigConvNetworkBenchmark() {
         var startTime = DispatchTime.now()
-        let network: TestBigConvNetwork = TestBigConvNetwork()
+        let network: TestBigConvNetwork = TestBigConvNetwork(mtlDevice: mtlDevice!)
         let initElapsedTime = Double(
                                     DispatchTime.now().uptimeNanoseconds -
                                     startTime.uptimeNanoseconds) / 1000000000;
@@ -179,7 +186,7 @@ class BenchmarkViewController: UIViewController {
             -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242,
             -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242
         ]
-        let input: Tensor<DataType> = Tensor<DataType>(shape: [1, 1, 28, 28], data: inputData)
+        let input: Tensor<DataType> = Tensor<DataType>(shape: [1, 1, 28, 28], data: inputData, mtlDevice)
         let forwardResult: Tensor<DataType> = network.forward(input: input)
         let forwardElapsedTime = Double(
                                     DispatchTime.now().uptimeNanoseconds -

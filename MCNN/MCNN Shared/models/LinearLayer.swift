@@ -9,6 +9,8 @@ import Foundation
 import Metal
 
 public class LinearLayer: NetworkModuleProtocol {
+    private static let GROUP_W: Int = 32
+    
     private let mtlBundle: MTLBundle
     private let nInputFeatures: Int
     private let nOutputFeatures: Int
@@ -23,8 +25,17 @@ public class LinearLayer: NetworkModuleProtocol {
         self.nOutputFeatures = nOutputFeatures
         self.gpu = gpu
         
-        self.params = Tensor<DataType>(shape: [nInputFeatures, nOutputFeatures], initValue: 1)
-        self.bias = (bias) ? Tensor<DataType>(shape: [1, nOutputFeatures], initValue: 1) : nil
+        self.params = Tensor<DataType>(shape: [nInputFeatures, nOutputFeatures],
+                                       initValue: 1,
+                                       mtlBundle.mtlDevice)
+        self.params.copyToGPU()
+
+        if (bias) {
+            self.bias = Tensor<DataType>(shape: [1, nOutputFeatures],
+                                         initValue: 1,
+                                         mtlBundle.mtlDevice)
+            self.bias!.copyToGPU()
+        }
     }
     
     public func forward(input: Tensor<DataType>) -> Tensor<DataType> {
@@ -51,6 +62,8 @@ public class LinearLayer: NetworkModuleProtocol {
     }
     
     private func gpuForward(input: Tensor<DataType>) -> Tensor<DataType> {
+        assert(input.dataGPU != nil)
+        
         let cmdBuffer = mtlBundle.mtlCommandQueue.makeCommandBuffer()
         let cmdEncoder = cmdBuffer?.makeComputeCommandEncoder()
         
@@ -66,48 +79,34 @@ public class LinearLayer: NetworkModuleProtocol {
         cmdEncoder?.setComputePipelineState(computePipelineState)
         
         let batchSize = input.getShape()[0]
-        
-        let metalDevice = MTLCreateSystemDefaultDevice();
-        let outputDataCPU = Tensor<DataType>(shape: [batchSize, nOutputFeatures], initValue: 0);
-        let outputDataSize = MemoryLayout<DataType>.stride * outputDataCPU.data.count;
-        let outputDataDevice = metalDevice!.makeBuffer(
-            bytes: outputDataCPU.data, length: outputDataSize,
-            options: MTLResourceOptions.cpuCacheModeWriteCombined)
-        let inputDataDevice = metalDevice!.makeBuffer(
-            bytes: input.data, length: MemoryLayout<DataType>.stride * input.data.count,
-            options: MTLResourceOptions.cpuCacheModeWriteCombined)
-        let paramsDataDevice = metalDevice!.makeBuffer(
-            bytes: params.data, length: MemoryLayout<DataType>.stride * params.data.count,
-            options: MTLResourceOptions.cpuCacheModeWriteCombined)
-        let biasDataDevice = (bias == nil) ? nil : metalDevice!.makeBuffer(
-            bytes: bias!.data, length: MemoryLayout<DataType>.stride * bias!.data.count,
-            options: MTLResourceOptions.cpuCacheModeWriteCombined)
+        let result = Tensor<DataType>(shape: [batchSize, nOutputFeatures],
+                                      initValue: 0,
+                                      mtlBundle.mtlDevice)
+        result.copyToGPU()
         var layerParamsCPU = LinearLayerParams(
             batch_size: UInt32(batchSize), n_input_channel: UInt32(nInputFeatures),
-            n_output_channel: UInt32(nOutputFeatures), bias: (bias != nil));
-        let layerParamsDevice = metalDevice!.makeBuffer(
-            bytes: &layerParamsCPU, length: MemoryLayout<LinearLayerParams>.stride,
-            options: MTLResourceOptions.cpuCacheModeWriteCombined)
+            n_output_channel: UInt32(nOutputFeatures), bias: (bias != nil))
+        let layerParamsDevice = mtlBundle.copyToGPU(
+            ptr: &layerParamsCPU, size: MemoryLayout<LinearLayerParams>.stride)
         
-        cmdEncoder?.setBuffer(outputDataDevice, offset: 0, index: 0)
-        cmdEncoder?.setBuffer(inputDataDevice, offset: 0, index: 1)
-        cmdEncoder?.setBuffer(paramsDataDevice, offset: 0, index: 2)
-        cmdEncoder?.setBuffer(biasDataDevice, offset: 0, index: 3)
+        cmdEncoder?.setBuffer(result.dataGPU, offset: 0, index: 0)
+        cmdEncoder?.setBuffer(input.dataGPU, offset: 0, index: 1)
+        cmdEncoder?.setBuffer(params.dataGPU, offset: 0, index: 2)
+        cmdEncoder?.setBuffer((bias == nil) ? nil : bias!.dataGPU, offset: 0, index: 3)
         cmdEncoder?.setBuffer(layerParamsDevice, offset: 0, index: 4)
         
-        let nthreadsPerBlock = MTLSize(width: 32, height: 32, depth: 1)
-        let nblocks = MTLSize(width: (nOutputFeatures + 31) / 32, height: batchSize, depth: 1)
+        let nthreadsPerBlock = MTLSize(
+            width: LinearLayer.GROUP_W, height: LinearLayer.GROUP_W, depth: 1)
+        let nblocks = MTLSize(
+            width: (nOutputFeatures + LinearLayer.GROUP_W - 1) / LinearLayer.GROUP_W,
+            height: batchSize, depth: 1)
         cmdEncoder?.dispatchThreadgroups(nblocks, threadsPerThreadgroup: nthreadsPerBlock)
         
         cmdEncoder?.endEncoding()
 
         cmdBuffer?.commit()
         cmdBuffer?.waitUntilCompleted()
-        
-        let outputDataDeviceBuf = NSData(bytesNoCopy: (outputDataDevice!.contents()),
-                                         length: outputDataSize, freeWhenDone: false)
-        outputDataDeviceBuf.getBytes(&outputDataCPU.data, length: outputDataSize)
-        
-        return outputDataCPU
+
+        return result
     }
 }

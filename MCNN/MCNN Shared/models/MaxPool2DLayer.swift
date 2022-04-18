@@ -46,7 +46,7 @@ public class MaxPool2DLayer: NetworkModuleProtocol {
         let outputWidth: Int = Int(floor(Double(inputWidth + 2 * padding - kernelSize) / Double(strideWidth))) + 1
         let result: Tensor<DataType> = Tensor<DataType>(
             shape: [batchSize, nInputChannels, outputHeight, outputWidth],
-            initValue: DataType.zero);
+            initValue: DataType.zero, mtlBundle.mtlDevice);
 
         for batchIdx in 0..<batchSize {
             for channelIdx in 0..<nInputChannels {

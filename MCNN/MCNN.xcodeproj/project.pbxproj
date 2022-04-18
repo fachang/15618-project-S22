@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		FE03B83028038EE20015B1A7 /* TensorUtilsCPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B82F28038EE20015B1A7 /* TensorUtilsCPU.swift */; };
-		FE03B8342804F1850015B1A7 /* TensorBuilderCPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B8332804F1850015B1A7 /* TensorBuilderCPU.swift */; };
 		FE03B8362804FD990015B1A7 /* Conv2DLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B8352804FD990015B1A7 /* Conv2DLayer.swift */; };
 		FE03B839280511890015B1A7 /* PaddingMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B838280511890015B1A7 /* PaddingMode.swift */; };
 		FE03B83B280634660015B1A7 /* MaxPool2DLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B83A280634650015B1A7 /* MaxPool2DLayer.swift */; };
@@ -29,7 +28,6 @@
 
 /* Begin PBXFileReference section */
 		FE03B82F28038EE20015B1A7 /* TensorUtilsCPU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TensorUtilsCPU.swift; sourceTree = "<group>"; };
-		FE03B8332804F1850015B1A7 /* TensorBuilderCPU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TensorBuilderCPU.swift; sourceTree = "<group>"; };
 		FE03B8352804FD990015B1A7 /* Conv2DLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conv2DLayer.swift; sourceTree = "<group>"; };
 		FE03B838280511890015B1A7 /* PaddingMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingMode.swift; sourceTree = "<group>"; };
 		FE03B83A280634650015B1A7 /* MaxPool2DLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxPool2DLayer.swift; sourceTree = "<group>"; };
@@ -80,7 +78,6 @@
 			isa = PBXGroup;
 			children = (
 				FE03B82F28038EE20015B1A7 /* TensorUtilsCPU.swift */,
-				FE03B8332804F1850015B1A7 /* TensorBuilderCPU.swift */,
 			);
 			path = cpu;
 			sourceTree = "<group>";
@@ -286,7 +283,6 @@
 				FE03B8362804FD990015B1A7 /* Conv2DLayer.swift in Sources */,
 				FE03B839280511890015B1A7 /* PaddingMode.swift in Sources */,
 				FE4F756727ECF11C00484934 /* Network.swift in Sources */,
-				FE03B8342804F1850015B1A7 /* TensorBuilderCPU.swift in Sources */,
 				FE4F756327EA6BAF00484934 /* BenchmarkViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
