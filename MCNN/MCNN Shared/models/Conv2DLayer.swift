@@ -9,7 +9,6 @@ import Foundation
 import Metal
 
 public class Conv2DLayer: NetworkModuleProtocol {
-    private let mtlBundle: MTLBundle
     private let nInputChannels: Int
     private let nOutputChannels: Int
     private let gpu: Bool
@@ -23,11 +22,10 @@ public class Conv2DLayer: NetworkModuleProtocol {
     private let kernels: Tensor<DataType>
     private let bias: Tensor<DataType>?
     
-    public init(mtlBundle: MTLBundle, nInputChannels: Int, nOutputChannels: Int, bias: Bool,
+    public init(nInputChannels: Int, nOutputChannels: Int, bias: Bool,
                 kernelSize: Int, strideHeight: Int, strideWidth: Int,
                 padding: Int, paddingMode: PaddingMode, gpu: Bool,
                 initKernels: [DataType]? = nil, initBias: [DataType]? = nil) {
-        self.mtlBundle = mtlBundle
         self.nInputChannels = nInputChannels
         self.nOutputChannels = nOutputChannels
         self.gpu = gpu
@@ -41,10 +39,10 @@ public class Conv2DLayer: NetworkModuleProtocol {
         let kernelShape = [nOutputChannels, nInputChannels, kernelSize, kernelSize]
         if (initKernels == nil) {
             self.kernels = Tensor<DataType>(
-                shape: kernelShape, initValue: 1, mtlBundle.mtlDevice)
+                shape: kernelShape, initValue: 1)
         } else {
             self.kernels = Tensor<DataType>(
-                shape: kernelShape, data: initKernels!, mtlBundle.mtlDevice)
+                shape: kernelShape, data: initKernels!)
         }
         
         if (!bias) {
@@ -53,10 +51,10 @@ public class Conv2DLayer: NetworkModuleProtocol {
             let biasShape = [1, nOutputChannels];
             if (initBias == nil) {
                 self.bias = Tensor<DataType>(
-                    shape: biasShape, initValue: 1, mtlBundle.mtlDevice)
+                    shape: biasShape, initValue: 1)
             } else {
                 self.bias = Tensor<DataType>(
-                    shape: biasShape, data: initBias!, mtlBundle.mtlDevice)
+                    shape: biasShape, data: initBias!)
             }
         }
     }
@@ -78,7 +76,7 @@ public class Conv2DLayer: NetworkModuleProtocol {
         let outputWidth: Int = Int(floor(Double(inputWidth + 2 * padding - kernelSize) / Double(strideWidth))) + 1
         let result: Tensor<DataType> = Tensor<DataType>(
             shape: [batchSize, nOutputChannels, outputHeight, outputWidth],
-            initValue: DataType.zero, mtlBundle.mtlDevice);
+            initValue: DataType.zero);
 
         for batchIdx in 0..<batchSize {
             for outChannelIdx in 0..<nOutputChannels {

@@ -13,24 +13,19 @@ public class Tensor<T>: CustomStringConvertible {
     internal var data: [T]
     private var shape: [Int]
 
-    private let mtlDevice: MTLDevice?
     internal var dataGPU: MTLBuffer?
 
-    public init(shape: [Int], initValue: T, _ mtlDevice: MTLDevice?) {
+    public init(shape: [Int], initValue: T) {
         let flattenSize: Int = shape.reduce(1, {result, i in return result * i})
         self.data = [T](repeating: initValue, count: flattenSize)
         self.shape = shape
-
-        self.mtlDevice = mtlDevice
     }
     
-    public init(shape: [Int], data: [T], _ mtlDevice: MTLDevice?) {
+    public init(shape: [Int], data: [T]) {
         let flattenSize: Int = shape.reduce(1, {result, i in return result * i})
         assert(flattenSize == data.count)
         self.data = data
         self.shape = shape
-        
-        self.mtlDevice = mtlDevice
     }
     
     public var description: String {
@@ -69,10 +64,7 @@ public class Tensor<T>: CustomStringConvertible {
     }
     
     public func copyToGPU() {
-        if (mtlDevice == nil) {
-            return;
-        }
-        dataGPU = mtlDevice!.makeBuffer(
+        dataGPU = MTLBundle.mtlDevice.makeBuffer(
             bytes: data, length: getSize(),
             options: MTLResourceOptions.cpuCacheModeWriteCombined)
     }
@@ -113,9 +105,5 @@ public class Tensor<T>: CustomStringConvertible {
             print("\(indent)],")
         }
         return arrShift
-    }
-    
-    public func getMtlDevice() -> MTLDevice? {
-        return self.mtlDevice;
     }
 }

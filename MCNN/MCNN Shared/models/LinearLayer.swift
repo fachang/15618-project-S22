@@ -10,30 +10,23 @@ import Metal
 
 public class LinearLayer: NetworkModuleProtocol {
     private static let GROUP_W: Int = 32
-    
-    private let mtlBundle: MTLBundle
+
     private let nInputFeatures: Int
     private let nOutputFeatures: Int
     private let gpu: Bool
     private var params: Tensor<DataType>
     private var bias: Tensor<DataType>?
     
-    public init(mtlBundle: MTLBundle, nInputFeatures: Int, nOutputFeatures: Int, bias: Bool,
-                gpu: Bool) {
-        self.mtlBundle = mtlBundle
+    public init(nInputFeatures: Int, nOutputFeatures: Int, bias: Bool, gpu: Bool) {
         self.nInputFeatures = nInputFeatures
         self.nOutputFeatures = nOutputFeatures
         self.gpu = gpu
         
-        self.params = Tensor<DataType>(shape: [nInputFeatures, nOutputFeatures],
-                                       initValue: 1,
-                                       mtlBundle.mtlDevice)
+        self.params = Tensor<DataType>(shape: [nInputFeatures, nOutputFeatures], initValue: 1)
         self.params.copyToGPU()
 
         if (bias) {
-            self.bias = Tensor<DataType>(shape: [1, nOutputFeatures],
-                                         initValue: 1,
-                                         mtlBundle.mtlDevice)
+            self.bias = Tensor<DataType>(shape: [1, nOutputFeatures], initValue: 1)
             self.bias!.copyToGPU()
         }
     }
@@ -64,14 +57,14 @@ public class LinearLayer: NetworkModuleProtocol {
     private func gpuForward(input: Tensor<DataType>) -> Tensor<DataType> {
         assert(input.dataGPU != nil)
         
-        let cmdBuffer = mtlBundle.mtlCommandQueue.makeCommandBuffer()
+        let cmdBuffer = MTLBundle.mtlCommandQueue.makeCommandBuffer()
         let cmdEncoder = cmdBuffer?.makeComputeCommandEncoder()
         
-        let mtlFunc = mtlBundle.mtlLibrary.makeFunction(name: "linear_forward")
+        let mtlFunc = MTLBundle.mtlLibrary.makeFunction(name: "linear_forward")
         
         var computePipelineState: MTLComputePipelineState!
         do {
-            computePipelineState = try mtlBundle.mtlDevice.makeComputePipelineState(function: mtlFunc!)
+            computePipelineState = try MTLBundle.mtlDevice.makeComputePipelineState(function: mtlFunc!)
         } catch {
             print("Fail to create Pipeline.")
         }
@@ -79,14 +72,12 @@ public class LinearLayer: NetworkModuleProtocol {
         cmdEncoder?.setComputePipelineState(computePipelineState)
         
         let batchSize = input.getShape()[0]
-        let result = Tensor<DataType>(shape: [batchSize, nOutputFeatures],
-                                      initValue: 0,
-                                      mtlBundle.mtlDevice)
+        let result = Tensor<DataType>(shape: [batchSize, nOutputFeatures], initValue: 0)
         result.copyToGPU()
         var layerParamsCPU = LinearLayerParams(
             batch_size: UInt32(batchSize), n_input_channel: UInt32(nInputFeatures),
             n_output_channel: UInt32(nOutputFeatures), bias: (bias != nil))
-        let layerParamsDevice = mtlBundle.copyToGPU(
+        let layerParamsDevice = MTLBundle.copyToGPU(
             ptr: &layerParamsCPU, size: MemoryLayout<LinearLayerParams>.stride)
         
         cmdEncoder?.setBuffer(result.dataGPU, offset: 0, index: 0)

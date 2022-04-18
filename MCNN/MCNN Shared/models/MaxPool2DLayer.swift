@@ -9,7 +9,6 @@ import Foundation
 import Metal
 
 public class MaxPool2DLayer: NetworkModuleProtocol {
-    private let mtlBundle: MTLBundle
     private let gpu: Bool
     
     private let kernelSize: Int
@@ -17,9 +16,8 @@ public class MaxPool2DLayer: NetworkModuleProtocol {
     private let strideWidth: Int
     private let padding: Int
     
-    public init(mtlBundle: MTLBundle, kernelSize: Int, strideHeight: Int, strideWidth: Int,
+    public init(kernelSize: Int, strideHeight: Int, strideWidth: Int,
                 padding: Int, gpu: Bool) {
-        self.mtlBundle = mtlBundle
         self.gpu = gpu
         
         self.kernelSize = kernelSize
@@ -46,7 +44,7 @@ public class MaxPool2DLayer: NetworkModuleProtocol {
         let outputWidth: Int = Int(floor(Double(inputWidth + 2 * padding - kernelSize) / Double(strideWidth))) + 1
         let result: Tensor<DataType> = Tensor<DataType>(
             shape: [batchSize, nInputChannels, outputHeight, outputWidth],
-            initValue: DataType.zero, mtlBundle.mtlDevice);
+            initValue: DataType.zero);
 
         for batchIdx in 0..<batchSize {
             for channelIdx in 0..<nInputChannels {
