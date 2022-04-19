@@ -38,6 +38,7 @@ struct Conv2DLayerParams {
     uint stride_width;
     uint padding;
     bool bias;
+    uint threadgroups_per_grid_dim4;
 };
 
 #endif /* BridgeTypes_h */
