@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		15C804EF280E64F9008E24B2 /* MaxPooling.metal in Sources */ = {isa = PBXBuildFile; fileRef = 15C804EE280E64F9008E24B2 /* MaxPooling.metal */; };
 		FE03B83028038EE20015B1A7 /* TensorUtilsCPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B82F28038EE20015B1A7 /* TensorUtilsCPU.swift */; };
 		FE03B8362804FD990015B1A7 /* Conv2DLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B8352804FD990015B1A7 /* Conv2DLayer.swift */; };
 		FE03B839280511890015B1A7 /* PaddingMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B838280511890015B1A7 /* PaddingMode.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		15C804EE280E64F9008E24B2 /* MaxPooling.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = MaxPooling.metal; sourceTree = "<group>"; };
 		FE03B82F28038EE20015B1A7 /* TensorUtilsCPU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TensorUtilsCPU.swift; sourceTree = "<group>"; };
 		FE03B8352804FD990015B1A7 /* Conv2DLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conv2DLayer.swift; sourceTree = "<group>"; };
 		FE03B838280511890015B1A7 /* PaddingMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingMode.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 		FE03B84B280DE87E0015B1A7 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				15C804EE280E64F9008E24B2 /* MaxPooling.metal */,
 				FE4F752E27EA669C00484934 /* BridgeTypes.h */,
 				FE4F752C27EA669C00484934 /* ReLu.metal */,
 				FE03B84E280DF0A20015B1A7 /* LinearLayer.metal */,
@@ -296,6 +299,7 @@
 				FE4F753827EA66AF00484934 /* AppDelegate.swift in Sources */,
 				FE03B8362804FD990015B1A7 /* Conv2DLayer.swift in Sources */,
 				FE03B851280E06230015B1A7 /* Conv2DLayer.metal in Sources */,
+				15C804EF280E64F9008E24B2 /* MaxPooling.metal in Sources */,
 				FE03B839280511890015B1A7 /* PaddingMode.swift in Sources */,
 				FE4F756727ECF11C00484934 /* Networks.swift in Sources */,
 				FE03B84F280DF0A30015B1A7 /* LinearLayer.metal in Sources */,
