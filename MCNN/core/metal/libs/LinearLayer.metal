@@ -22,8 +22,8 @@ kernel void linear_forward(device float *output [[ buffer(0) ]],
                            uint2 threads_per_group [[ threads_per_threadgroup ]],
                            uint2 thread_id [[ thread_position_in_threadgroup ]]) {
     
-    uint row = thread_group_id.y * threads_per_group.y + thread_id.y;
     uint col = thread_group_id.x * threads_per_group.x + thread_id.x;
+    uint row = thread_group_id.y * threads_per_group.y + thread_id.y;
     
     if (row >= params->batch_size || col >= params->n_output_channel) {
         return;
