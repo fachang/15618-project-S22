@@ -41,10 +41,10 @@ struct Conv2DLayerParams {
     uint batch_size;
     uint n_input_channels;
     uint n_output_channels;
-    uint output_width;
     uint output_height;
-    uint input_width;
+    uint output_width;
     uint input_height;
+    uint input_width;
     uint kernel_size;
     uint stride_height;
     uint stride_width;
