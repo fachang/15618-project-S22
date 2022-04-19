@@ -59,17 +59,16 @@ public class LinearLayer: NetworkModuleProtocol {
         
         let cmdBuffer = MTLCommons.mtlCommandQueue.makeCommandBuffer()!
         let cmdEncoder = cmdBuffer.makeComputeCommandEncoder()!
-
         assert(MTLUtils.addComputePipeline(cmdEncoder: cmdEncoder,
-                                            kernelLibrary: MTLCommons.defaultLib,
-                                            kernelFuncName: "linear_forward") == true)
+                                           kernelLibrary: MTLCommons.defaultLib,
+                                           kernelFuncName: "linear_forward") == true)
 
         let batchSize = input.getShape()[0]
         let result = Tensor<DataType>(shape: [batchSize, nOutputFeatures], initValue: 0)
         result.copyToGPU()
         var layerParamsCPU = LinearLayerParams(
-            batch_size: UInt32(batchSize), n_input_channel: UInt32(nInputFeatures),
-            n_output_channel: UInt32(nOutputFeatures), bias: (bias != nil))
+            batch_size: uint(batchSize), n_input_channel: uint(nInputFeatures),
+            n_output_channel: uint(nOutputFeatures), bias: (bias != nil))
         let layerParamsDevice = MTLUtils.copyToGPU(
             dataPtr: &layerParamsCPU, size: MemoryLayout<LinearLayerParams>.stride)
 

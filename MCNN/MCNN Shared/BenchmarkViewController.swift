@@ -24,9 +24,9 @@ class BenchmarkViewController: UIViewController {
     }
     
     @IBAction func runBenchmark(sender: UIButton) {
-        runLinearNetworkBenchmark()
+        // runLinearNetworkBenchmark()
         // runConvNetworkBenchmark()
-        // runBigConvNetworkBenchmark()
+        runBigConvNetworkBenchmark()
     }
     
     private func runLinearNetworkBenchmark() {
@@ -55,34 +55,51 @@ class BenchmarkViewController: UIViewController {
     }
     
     private func runConvNetworkBenchmark() {
+        // Test CPU version
         var startTime = DispatchTime.now()
-        let network: TestConvNetwork = TestConvNetwork()
-        let initElapsedTime = Double(
-                                    DispatchTime.now().uptimeNanoseconds -
-                                    startTime.uptimeNanoseconds) / 1000000000;
-        
+        var input: Tensor<DataType> = Tensor<DataType>(shape: [2, 3, 5, 5], initValue: 1)
+        var network: TestConvNetwork = TestConvNetwork()
+        var initElapsedTime = Double(
+            DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds) / 1000000000;
+
         startTime = DispatchTime.now()
-        let input: Tensor<DataType> = Tensor<DataType>(shape: [2, 3, 5, 5], initValue: 1)
-        let forwardResult: Tensor<DataType> = network.forward(input: input)
-        let forwardElapsedTime = Double(
-                                    DispatchTime.now().uptimeNanoseconds -
-                                    startTime.uptimeNanoseconds) / 1000000000;
+        var forwardResult: Tensor<DataType> = network.forward(input: input)
+        var forwardElapsedTime = Double(
+            DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds) / 1000000000;
 
         forwardResult.printData()
-        benchmarkTextLabel.text =
+        var metricString =
             "Metrics:\n" +
             "Init Elapsed Time: \(initElapsedTime) sec\n" +
             "Forward Elapsed Time: \(forwardElapsedTime) sec\n";
+        
+        metricString += "--------------\n"
+        
+        // Test GPU version
+        startTime = DispatchTime.now()
+        input = Tensor<DataType>(shape: [2, 3, 5, 5], initValue: 1)
+        input.copyToGPU()
+        network = TestConvNetwork(gpu: true)
+        initElapsedTime = Double(
+            DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds) / 1000000000;
+        
+        startTime = DispatchTime.now()
+        forwardResult = network.forward(input: input)
+        forwardResult.copyToCPU()
+        forwardElapsedTime = Double(
+            DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds) / 1000000000;
+
+        forwardResult.printData()
+        metricString += (
+            "Metrics:\n" +
+            "Init Elapsed Time: \(initElapsedTime) sec\n" +
+            "Forward Elapsed Time: \(forwardElapsedTime) sec\n"
+        );
+        
+        benchmarkTextLabel.text = metricString;
     }
     
     private func runBigConvNetworkBenchmark() {
-        var startTime = DispatchTime.now()
-        let network: TestBigConvNetwork = TestBigConvNetwork()
-        let initElapsedTime = Double(
-                                    DispatchTime.now().uptimeNanoseconds -
-                                    startTime.uptimeNanoseconds) / 1000000000;
-        
-        startTime = DispatchTime.now()
         let inputData: [DataType] = [
             -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242,
             -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242,
@@ -183,16 +200,48 @@ class BenchmarkViewController: UIViewController {
             -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242,
             -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242, -0.4242
         ]
-        let input: Tensor<DataType> = Tensor<DataType>(shape: [1, 1, 28, 28], data: inputData)
-        let forwardResult: Tensor<DataType> = network.forward(input: input)
-        let forwardElapsedTime = Double(
-                                    DispatchTime.now().uptimeNanoseconds -
-                                    startTime.uptimeNanoseconds) / 1000000000;
+        
+        // Test CPU version
+        var startTime = DispatchTime.now()
+        var network: TestBigConvNetwork = TestBigConvNetwork()
+        var initElapsedTime = Double(
+            DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds) / 1000000000;
+        
+        startTime = DispatchTime.now()
+        var input: Tensor<DataType> = Tensor<DataType>(shape: [1, 1, 28, 28], data: inputData)
+        var forwardResult: Tensor<DataType> = network.forward(input: input)
+        var forwardElapsedTime = Double(
+            DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds) / 1000000000;
 
         forwardResult.printData()
-        benchmarkTextLabel.text =
+        var metricString =
             "Metrics:\n" +
             "Init Elapsed Time: \(initElapsedTime) sec\n" +
-            "Forward Elapsed Time: \(forwardElapsedTime) sec\n";
+            "Forward Elapsed Time: \(forwardElapsedTime) sec\n"
+        
+        metricString += "--------------\n"
+        
+        // Test GPU version
+        startTime = DispatchTime.now()
+        network = TestBigConvNetwork(gpu: true)
+        initElapsedTime = Double(
+            DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds) / 1000000000;
+        
+        startTime = DispatchTime.now()
+        input = Tensor<DataType>(shape: [1, 1, 28, 28], data: inputData)
+        input.copyToGPU()
+        forwardResult = network.forward(input: input)
+        forwardResult.copyToCPU()
+        forwardElapsedTime = Double(
+            DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds) / 1000000000;
+
+        forwardResult.printData()
+        metricString += (
+            "Metrics:\n" +
+            "Init Elapsed Time: \(initElapsedTime) sec\n" +
+            "Forward Elapsed Time: \(forwardElapsedTime) sec\n"
+        )
+        
+        benchmarkTextLabel.text = metricString
     }
 }

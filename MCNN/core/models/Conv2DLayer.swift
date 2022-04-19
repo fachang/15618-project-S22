@@ -9,6 +9,8 @@ import Foundation
 import Metal
 
 public class Conv2DLayer: NetworkModuleProtocol {
+    private static let GROUP_DIM4_W: Int = 32
+    
     private let nInputChannels: Int
     private let nOutputChannels: Int
     private let gpu: Bool
@@ -44,6 +46,9 @@ public class Conv2DLayer: NetworkModuleProtocol {
             self.kernels = Tensor<DataType>(
                 shape: kernelShape, data: initKernels!)
         }
+        if (gpu) {
+            self.kernels.copyToGPU()
+        }
         
         if (!bias) {
             self.bias = nil;
@@ -56,12 +61,15 @@ public class Conv2DLayer: NetworkModuleProtocol {
                 self.bias = Tensor<DataType>(
                     shape: biasShape, data: initBias!)
             }
+            if (gpu) {
+                self.bias!.copyToGPU()
+            }
         }
     }
     
     public func forward(input: Tensor<DataType>) -> Tensor<DataType> {
         if (gpu) {
-            return cpuForward(input: input)
+            return gpuForward(input: input)
         } else {
             return cpuForward(input: input)
         }
@@ -114,6 +122,69 @@ public class Conv2DLayer: NetworkModuleProtocol {
             }
         }
         
+        return result
+    }
+    
+    private func gpuForward(input: Tensor<DataType>) -> Tensor<DataType> {
+        assert(input.dataGPU != nil)
+
+        let inputShape: [Int] = input.getShape()
+        let batchSize: Int = inputShape[0]
+        let inputHeight: Int = inputShape[2]
+        let inputWidth: Int = inputShape[3]
+        let outputHeight: Int = Int(floor(Double(inputHeight + 2 * padding - kernelSize) / Double(strideHeight))) + 1
+        let outputWidth: Int = Int(floor(Double(inputWidth + 2 * padding - kernelSize) / Double(strideWidth))) + 1
+        let result: Tensor<DataType> = Tensor<DataType>(
+            shape: [batchSize, nOutputChannels, outputHeight, outputWidth],
+            initValue: DataType.zero);
+        result.copyToGPU()
+
+        let threadgroupsPerGridW = (outputWidth + Conv2DLayer.GROUP_DIM4_W - 1) / Conv2DLayer.GROUP_DIM4_W
+        let threadgroupsPerGridH = (outputHeight + Conv2DLayer.GROUP_DIM4_W - 1) / Conv2DLayer.GROUP_DIM4_W
+        var threadgroupsPerGrid = threadgroupsPerGridW * threadgroupsPerGridH
+        threadgroupsPerGrid = (threadgroupsPerGrid == 0) ? 1 : threadgroupsPerGrid
+
+        var convParamsCPU = Conv2DLayerParams(
+            batch_size: uint(batchSize),
+            n_input_channels: uint(nInputChannels),
+            n_output_channels: uint(nOutputChannels),
+            output_height: uint(outputHeight),
+            output_width: uint(outputWidth),
+            input_height: uint(inputHeight),
+            input_width: uint(inputWidth),
+            kernel_size: uint(kernelSize),
+            stride_height: uint(strideHeight),
+            stride_width: uint(strideWidth),
+            padding: uint(padding),
+            bias: (bias != nil),
+            threadgroups_per_grid_dim4: uint(threadgroupsPerGridW)
+        )
+        let convParamsGPU = MTLUtils.copyToGPU(
+            dataPtr: &convParamsCPU, size: MemoryLayout<Conv2DLayerParams>.stride)
+
+        let cmdBuffer = MTLCommons.mtlCommandQueue.makeCommandBuffer()!
+        let cmdEncoder = cmdBuffer.makeComputeCommandEncoder()!
+        assert(MTLUtils.addComputePipeline(cmdEncoder: cmdEncoder,
+                                           kernelLibrary: MTLCommons.defaultLib,
+                                           kernelFuncName: "conv2d_forward") == true)
+        
+        cmdEncoder.setBuffer(result.dataGPU, offset: 0, index: 0)
+        cmdEncoder.setBuffer(input.dataGPU, offset: 0, index: 1)
+        cmdEncoder.setBuffer(kernels.dataGPU, offset: 0, index: 2)
+        cmdEncoder.setBuffer((bias == nil) ? nil : bias!.dataGPU, offset: 0, index: 3)
+        cmdEncoder.setBuffer(convParamsGPU, offset: 0, index: 4)
+
+        let nthreadsPerBlock = MTLSize(
+            width: Conv2DLayer.GROUP_DIM4_W, height: Conv2DLayer.GROUP_DIM4_W, depth: 1)
+        let nblocks = MTLSize(
+            width: batchSize, height: nOutputChannels, depth: threadgroupsPerGrid)
+        cmdEncoder.dispatchThreadgroups(nblocks, threadsPerThreadgroup: nthreadsPerBlock)
+        
+        cmdEncoder.endEncoding()
+
+        cmdBuffer.commit()
+        cmdBuffer.waitUntilCompleted()
+
         return result
     }
 }

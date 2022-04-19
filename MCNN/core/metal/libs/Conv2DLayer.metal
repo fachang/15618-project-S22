@@ -27,9 +27,9 @@ kernel void conv2d_forward(device float *output [[ buffer(0) ]],
     uint output_row = (thread_group_id.z / threadgroups_per_grid_dim4) * threads_per_group.y + thread_id.y;
     uint output_channel_idx = thread_group_id.y;
     uint batch_idx = thread_group_id.x;
-    
-    if (batch_idx > params->batch_size || output_channel_idx > params->n_output_channels ||
-            output_row > params->output_height || output_col > params->output_width) {
+
+    if (batch_idx >= params->batch_size || output_channel_idx >= params->n_output_channels ||
+            output_row >= params->output_height || output_col >= params->output_width) {
         return;
     }
 
@@ -43,14 +43,13 @@ kernel void conv2d_forward(device float *output [[ buffer(0) ]],
                 if (input_row_start + i >= 0 && input_row_start + i < params->input_height &&
                         input_col_start + j >= 0 && input_col_start + j < params->input_width) {
                     sum += (input[
-                                batch_idx * (
-                                    params->n_input_channels * params->input_height * params->input_width) +
+                                batch_idx * (params->n_input_channels * params->input_height *
+                                             params->input_width) +
                                 c * (params->input_height * params->input_width) +
                                 (input_row_start + i) * (params->input_width) +
                                 (input_col_start + j)
                             ] * weight[
-                                output_channel_idx * (
-                                    params->n_input_channels * params->kernel_size * params->kernel_size) +
+                                output_channel_idx * (params->n_input_channels * params->kernel_size *                                   params->kernel_size) +
                                 c * (params->kernel_size * params->kernel_size) +
                                 (i) * (params->kernel_size) +
                                 (j)
@@ -61,6 +60,7 @@ kernel void conv2d_forward(device float *output [[ buffer(0) ]],
     }
     
     sum += ((params->bias) ? bias[output_channel_idx] : 0);
+
     output[
         batch_idx * (params->n_output_channels * params->output_height * params->output_width) +
         output_channel_idx * (params->output_height * params->output_width) +
