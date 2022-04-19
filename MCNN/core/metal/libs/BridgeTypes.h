@@ -25,6 +25,18 @@ struct LinearLayerParams {
     bool bias;
 };
 
+
+struct PoolingLayerParams {
+    uint h_in;
+    uint w_in;
+    uint channel_size;
+    uint pool_size;
+    uint h_out;
+    uint w_out;
+    uint stride;
+    uint padding;
+    uint batchSize;
+};
 struct Conv2DLayerParams {
     uint batch_size;
     uint n_input_channels;
@@ -39,6 +51,7 @@ struct Conv2DLayerParams {
     uint padding;
     bool bias;
     uint threadgroups_per_grid_dim4;
+
 };
 
 #endif /* BridgeTypes_h */
