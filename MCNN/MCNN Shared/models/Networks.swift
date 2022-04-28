@@ -144,3 +144,57 @@ public class TestImg2colBigConvNetwork {
         return curTensor
     }
 }
+
+public class TestNaiveConvNetwork_3_96_11 {
+    public typealias DataType = Float32
+    
+    private let layers: [NetworkModuleProtocol]
+    
+    public init(gpu: Bool = false) {
+        let initKernelsData1: [DataType] = (0..<(3*96*11*11)).map { _ in Float32.random(in: 0.0..<1.0) }
+
+        let initBiasData1: [DataType] = (0..<(96)).map { _ in Float32.random(in: 0.0..<1.0) }
+
+        self.layers = [
+            Conv2DLayerNaive(nInputChannels: 3, nOutputChannels: 96, bias: true,
+                        kernelSize: 11, strideHeight: 4, strideWidth: 4,
+                        padding: 0, paddingMode: PaddingMode.zeros, gpu: gpu,
+                        initKernels: initKernelsData1, initBias: initBiasData1),
+        ];
+    }
+    
+    public func forward(input: Tensor<DataType>) -> Tensor<DataType> {
+        var curTensor: Tensor<DataType> = input
+        for nnModule in self.layers {
+            curTensor = nnModule.forward(input: curTensor)
+        }
+        return curTensor
+    }
+}
+
+public class TestImg2colConvNetwork_3_96_11 {
+    public typealias DataType = Float32
+    
+    private let layers: [NetworkModuleProtocol]
+    
+    public init(gpu: Bool = false) {
+        let initKernelsData1: [DataType] = (0..<(3*96*11*11)).map { _ in Float32.random(in: 0.0..<1.0) }
+
+        let initBiasData1: [DataType] = (0..<(96)).map { _ in Float32.random(in: 0.0..<1.0) }
+
+        self.layers = [
+            Conv2DLayerImg2col(nInputChannels: 3, nOutputChannels: 96, bias: true,
+                        kernelSize: 11, strideHeight: 4, strideWidth: 4,
+                        padding: 0, paddingMode: PaddingMode.zeros, gpu: gpu,
+                        initKernels: initKernelsData1, initBias: initBiasData1),
+        ];
+    }
+    
+    public func forward(input: Tensor<DataType>) -> Tensor<DataType> {
+        var curTensor: Tensor<DataType> = input
+        for nnModule in self.layers {
+            curTensor = nnModule.forward(input: curTensor)
+        }
+        return curTensor
+    }
+}
