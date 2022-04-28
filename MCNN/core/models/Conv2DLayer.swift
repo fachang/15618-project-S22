@@ -280,15 +280,13 @@ public class Conv2DLayerImg2col: NetworkModuleProtocol {
         let outputHeight: Int = Int(floor(Double(inputHeight + 2 * padding - kernelSize) / Double(strideHeight))) + 1
         let outputWidth: Int = Int(floor(Double(inputWidth + 2 * padding - kernelSize) / Double(strideWidth))) + 1
         let img2colBuffer: Tensor<DataType> = Tensor<DataType>(
-            shape: [nInputChannels * kernelSize * kernelSize * outputHeight * outputWidth],
+            shape: [nInputChannels * kernelSize * kernelSize, outputHeight * outputWidth],
             initValue: DataType.zero)
         img2colBuffer.copyToGPU()
-        /*
         let result: Tensor<DataType> = Tensor<DataType>(
             shape: [batchSize, nOutputChannels, outputHeight, outputWidth],
             initValue: DataType.zero);
         result.copyToGPU()
-        */
 
         var convParamsCPU = Conv2DLayerParams(
             batch_size: uint(batchSize),
@@ -309,33 +307,80 @@ public class Conv2DLayerImg2col: NetworkModuleProtocol {
             dataPtr: &convParamsCPU, size: MemoryLayout<Conv2DLayerParams>.stride)
 
         for batchIdx in 0..<batchSize {
-            let cmdBuffer = MTLCommons.mtlCommandQueue.makeCommandBuffer()!
-            let cmdEncoder = cmdBuffer.makeComputeCommandEncoder()!
-            assert(MTLUtils.addComputePipeline(cmdEncoder: cmdEncoder,
-                                               kernelLibrary: MTLCommons.defaultLib,
-                                               kernelFuncName: "conv2d_img2col") == true)
-            
-            var batchIdxCPU = uint(batchIdx)
-            let batchIdxGPU = MTLUtils.copyToGPU(
-                dataPtr: &batchIdxCPU, size: MemoryLayout<uint>.stride)
-
-            cmdEncoder.setBuffer(img2colBuffer.dataGPU, offset: 0, index: 0)
-            cmdEncoder.setBuffer(input.dataGPU, offset: 0, index: 1)
-            cmdEncoder.setBuffer(convParamsGPU, offset: 0, index: 2)
-            cmdEncoder.setBuffer(batchIdxGPU, offset: 0, index: 3)
-
-            let groupSize = Conv2DLayerImg2col.GROUP_W * Conv2DLayerImg2col.GROUP_W
-            let nthreadsPerBlock = MTLSize(width: groupSize, height: 1, depth: 1)
-            let nblocks = MTLSize(
-                width: (nInputChannels * outputWidth * outputHeight + groupSize - 1) / groupSize,
-                height: 1, depth: 1)
-            cmdEncoder.dispatchThreadgroups(nblocks, threadsPerThreadgroup: nthreadsPerBlock)
-            
-            cmdEncoder.endEncoding()
-
-            cmdBuffer.commit()
-            cmdBuffer.waitUntilCompleted()
+            gpuImg2col(img2colBuffer: img2colBuffer, input: input,
+                       convParamsGPU: convParamsGPU, batchIdx: batchIdx)
+            gpuMatrixMult(result: result, img2colBuffer: img2colBuffer, batchIdx: batchIdx)
         }
-        return img2colBuffer
+        return result
+    }
+    
+    private func gpuImg2col(img2colBuffer: Tensor<DataType>, input: Tensor<DataType>,
+                            convParamsGPU: MTLBuffer?, batchIdx: Int) {
+        var batchIdxCPU = uint(batchIdx)
+        let batchIdxGPU = MTLUtils.copyToGPU(
+            dataPtr: &batchIdxCPU, size: MemoryLayout<uint>.stride)
+
+        let cmdBuffer = MTLCommons.mtlCommandQueue.makeCommandBuffer()!
+        let cmdEncoder = cmdBuffer.makeComputeCommandEncoder()!
+        assert(MTLUtils.addComputePipeline(cmdEncoder: cmdEncoder,
+                                           kernelLibrary: MTLCommons.defaultLib,
+                                           kernelFuncName: "conv2d_img2col") == true)
+
+        cmdEncoder.setBuffer(img2colBuffer.dataGPU, offset: 0, index: 0)
+        cmdEncoder.setBuffer(input.dataGPU, offset: 0, index: 1)
+        cmdEncoder.setBuffer(convParamsGPU, offset: 0, index: 2)
+        cmdEncoder.setBuffer(batchIdxGPU, offset: 0, index: 3)
+
+        let groupSize = Conv2DLayerImg2col.GROUP_W * Conv2DLayerImg2col.GROUP_W
+        let nthreadsPerBlock = MTLSize(width: groupSize, height: 1, depth: 1)
+        let nblocks = MTLSize(
+            width: (img2colBuffer.data.count / (kernelSize * kernelSize) + groupSize - 1) / groupSize,
+            height: 1, depth: 1)
+        cmdEncoder.dispatchThreadgroups(nblocks, threadsPerThreadgroup: nthreadsPerBlock)
+        
+        cmdEncoder.endEncoding()
+
+        cmdBuffer.commit()
+        cmdBuffer.waitUntilCompleted()
+    }
+
+    private func gpuMatrixMult(result: Tensor<DataType>, img2colBuffer: Tensor<DataType>, batchIdx: Int) {
+        let cmdBuffer = MTLCommons.mtlCommandQueue.makeCommandBuffer()!
+        let cmdEncoder = cmdBuffer.makeComputeCommandEncoder()!
+        assert(MTLUtils.addComputePipeline(cmdEncoder: cmdEncoder,
+                                           kernelLibrary: MTLCommons.defaultLib,
+                                           kernelFuncName: "matmul") == true)
+
+        let img2colBufferShape = img2colBuffer.getShape()
+        
+        var matMulParamsCPU = MatMulParams(
+            mat1_height: uint(nOutputChannels),
+            mat1_width: uint(img2colBufferShape[0]),
+            mat2_width: uint(img2colBufferShape[1]),
+            mat1_bias: (bias != nil),
+            mat2_bias: false,
+            output_offset: uint(batchIdx * nOutputChannels * img2colBufferShape[1])
+        )
+        let matMulParamsGPU = MTLUtils.copyToGPU(
+            dataPtr: &matMulParamsCPU, size: MemoryLayout<MatMulParams>.stride)
+        
+        cmdEncoder.setBuffer(result.dataGPU, offset: 0, index: 0)
+        cmdEncoder.setBuffer(kernels.dataGPU, offset: 0, index: 1)
+        cmdEncoder.setBuffer(img2colBuffer.dataGPU, offset: 0, index: 2)
+        cmdEncoder.setBuffer((bias == nil) ? nil : bias!.dataGPU, offset: 0, index: 3)
+        cmdEncoder.setBuffer(matMulParamsGPU, offset: 0, index: 4)
+
+        let nthreadsPerBlock = MTLSize(
+            width: Conv2DLayerImg2col.GROUP_W, height: Conv2DLayerImg2col.GROUP_W, depth: 1)
+        let nblocks = MTLSize(
+            width: (img2colBufferShape[1] + Conv2DLayerImg2col.GROUP_W - 1) / Conv2DLayerImg2col.GROUP_W,
+            height: (nOutputChannels + Conv2DLayerImg2col.GROUP_W - 1) / Conv2DLayerImg2col.GROUP_W,
+            depth: 1)
+        cmdEncoder.dispatchThreadgroups(nblocks, threadsPerThreadgroup: nthreadsPerBlock)
+
+        cmdEncoder.endEncoding()
+
+        cmdBuffer.commit()
+        cmdBuffer.waitUntilCompleted()
     }
 }

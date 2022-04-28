@@ -20,9 +20,18 @@
 
 struct LinearLayerParams {
     uint batch_size;
-    uint n_input_channel;
-    uint n_output_channel;
+    uint n_input_channels;
+    uint n_output_channels;
     bool bias;
+};
+
+struct MatMulParams {
+    uint mat1_height;
+    uint mat1_width;
+    uint mat2_width;
+    bool mat1_bias;
+    bool mat2_bias;
+    uint output_offset;
 };
 
 struct PoolingLayerParams {

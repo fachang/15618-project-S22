@@ -25,8 +25,8 @@ class BenchmarkViewController: UIViewController {
     
     @IBAction func runBenchmark(sender: UIButton) {
         // runLinearNetworkBenchmark()
-        runConvNetworkBenchmark()
-        // runBigConvNetworkBenchmark()
+        // runConvNetworkBenchmark()
+        runBigConvNetworkBenchmark()
     }
     
     private func runLinearNetworkBenchmark() {
@@ -100,7 +100,7 @@ class BenchmarkViewController: UIViewController {
 
         // Test Img2col GPU version
         startTime = DispatchTime.now()
-        input = Tensor<DataType>(shape: [1, 3, 5, 5], initValue: 1)
+        input = Tensor<DataType>(shape: [2, 3, 5, 5], initValue: 1)
         input.copyToGPU()
         let networkImg2col = TestImg2colConvNetwork(gpu: true)
         initElapsedTime = Double(
@@ -112,7 +112,6 @@ class BenchmarkViewController: UIViewController {
         forwardElapsedTime = Double(
             DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds) / 1000000000;
 
-        forwardResult.reshape(shape: [3, 3, 3, 3, 5])
         forwardResult.printData()
         metricString += (
             "Metrics:\n" +
@@ -244,7 +243,7 @@ class BenchmarkViewController: UIViewController {
             "Forward Elapsed Time: \(forwardElapsedTime) sec\n"
         
         metricString += "--------------\n"
-        
+
         // Test GPU version
         startTime = DispatchTime.now()
         network = TestNaiveBigConvNetwork(gpu: true)
@@ -255,6 +254,29 @@ class BenchmarkViewController: UIViewController {
         input = Tensor<DataType>(shape: [1, 1, 28, 28], data: inputData)
         input.copyToGPU()
         forwardResult = network.forward(input: input)
+        forwardResult.copyToCPU()
+        forwardElapsedTime = Double(
+            DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds) / 1000000000;
+
+        forwardResult.printData()
+        metricString += (
+            "Metrics:\n" +
+            "Init Elapsed Time: \(initElapsedTime) sec\n" +
+            "Forward Elapsed Time: \(forwardElapsedTime) sec\n"
+        )
+        
+        metricString += "--------------\n"
+
+        // Test Img2col GPU version
+        startTime = DispatchTime.now()
+        let networkImg2col = TestImg2colBigConvNetwork(gpu: true)
+        initElapsedTime = Double(
+            DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds) / 1000000000;
+        
+        startTime = DispatchTime.now()
+        input = Tensor<DataType>(shape: [1, 1, 28, 28], data: inputData)
+        input.copyToGPU()
+        forwardResult = networkImg2col.forward(input: input)
         forwardResult.copyToCPU()
         forwardElapsedTime = Double(
             DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds) / 1000000000;

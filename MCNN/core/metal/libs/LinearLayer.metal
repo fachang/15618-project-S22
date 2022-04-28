@@ -25,14 +25,14 @@ kernel void linear_forward(device float *output [[ buffer(0) ]],
     uint col = thread_group_id.x * threads_per_group.x + thread_id.x;
     uint row = thread_group_id.y * threads_per_group.y + thread_id.y;
     
-    if (row >= params->batch_size || col >= params->n_output_channel) {
+    if (row >= params->batch_size || col >= params->n_output_channels) {
         return;
     }
     
     float sum = 0;
-    for (uint i = 0; i < params->n_input_channel; i++) {
-        sum += input[row * params->n_input_channel + i] * weight[i * params->n_output_channel + col];
+    for (uint i = 0; i < params->n_input_channels; i++) {
+        sum += input[row * params->n_input_channels + i] * weight[i * params->n_output_channels + col];
     }
     sum += ((params->bias) ? bias[col] : 0);
-    output[row * params->n_output_channel + col] = sum;
+    output[row * params->n_output_channels + col] = sum;
 }

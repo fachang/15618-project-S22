@@ -67,8 +67,8 @@ public class LinearLayer: NetworkModuleProtocol {
         let result = Tensor<DataType>(shape: [batchSize, nOutputFeatures], initValue: 0)
         result.copyToGPU()
         var layerParamsCPU = LinearLayerParams(
-            batch_size: uint(batchSize), n_input_channel: uint(nInputFeatures),
-            n_output_channel: uint(nOutputFeatures), bias: (bias != nil))
+            batch_size: uint(batchSize), n_input_channels: uint(nInputFeatures),
+            n_output_channels: uint(nOutputFeatures), bias: (bias != nil))
         let layerParamsDevice = MTLUtils.copyToGPU(
             dataPtr: &layerParamsCPU, size: MemoryLayout<LinearLayerParams>.stride)
 
@@ -82,7 +82,7 @@ public class LinearLayer: NetworkModuleProtocol {
             width: LinearLayer.GROUP_W, height: LinearLayer.GROUP_W, depth: 1)
         let nblocks = MTLSize(
             width: (nOutputFeatures + LinearLayer.GROUP_W - 1) / LinearLayer.GROUP_W,
-            height: batchSize, depth: 1)
+            height: (batchSize + LinearLayer.GROUP_W - 1) / LinearLayer.GROUP_W, depth: 1)
         cmdEncoder.dispatchThreadgroups(nblocks, threadsPerThreadgroup: nthreadsPerBlock)
         
         cmdEncoder.endEncoding()

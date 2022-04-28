@@ -27,6 +27,7 @@
 		FE4F756D27ED1FCD00484934 /* LinearLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756C27ED1FCA00484934 /* LinearLayer.swift */; };
 		FE4F757227ED26CF00484934 /* NetworkModuleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F757127ED26CF00484934 /* NetworkModuleProtocol.swift */; };
 		FE4F757827ED2CE800484934 /* MTLCommons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F757727ED2CE800484934 /* MTLCommons.swift */; };
+		FEE6543F281A5A8A0022C8C1 /* MatMul.metal in Sources */ = {isa = PBXBuildFile; fileRef = FEE6543E281A5A8A0022C8C1 /* MatMul.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		FE4F756C27ED1FCA00484934 /* LinearLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearLayer.swift; sourceTree = "<group>"; };
 		FE4F757127ED26CF00484934 /* NetworkModuleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkModuleProtocol.swift; sourceTree = "<group>"; };
 		FE4F757727ED2CE800484934 /* MTLCommons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTLCommons.swift; sourceTree = "<group>"; };
+		FEE6543E281A5A8A0022C8C1 /* MatMul.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MatMul.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 				FE4F752C27EA669C00484934 /* ReLu.metal */,
 				FE03B84E280DF0A20015B1A7 /* LinearLayer.metal */,
 				FE03B850280E06230015B1A7 /* Conv2DLayer.metal */,
+				FEE6543E281A5A8A0022C8C1 /* MatMul.metal */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 				FE03B8362804FD990015B1A7 /* Conv2DLayer.swift in Sources */,
 				FE03B851280E06230015B1A7 /* Conv2DLayer.metal in Sources */,
 				15C804EF280E64F9008E24B2 /* MaxPooling.metal in Sources */,
+				FEE6543F281A5A8A0022C8C1 /* MatMul.metal in Sources */,
 				FE03B839280511890015B1A7 /* PaddingMode.swift in Sources */,
 				FE4F756727ECF11C00484934 /* Networks.swift in Sources */,
 				FE03B84F280DF0A30015B1A7 /* LinearLayer.metal in Sources */,
