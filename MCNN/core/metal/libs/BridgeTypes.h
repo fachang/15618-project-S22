@@ -18,13 +18,6 @@
 #import <Foundation/Foundation.h>
 #endif
 
-struct LinearLayerParams {
-    uint batch_size;
-    uint n_input_channels;
-    uint n_output_channels;
-    bool bias;
-};
-
 struct MatMulParams {
     uint mat1_height;
     uint mat1_width;

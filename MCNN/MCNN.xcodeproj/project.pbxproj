@@ -14,7 +14,6 @@
 		FE03B83B280634660015B1A7 /* MaxPool2DLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B83A280634650015B1A7 /* MaxPool2DLayer.swift */; };
 		FE03B83D28066FC90015B1A7 /* ReLu.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B83C28066FC80015B1A7 /* ReLu.swift */; };
 		FE03B844280DD93C0015B1A7 /* MTLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE03B843280DD93C0015B1A7 /* MTLUtils.swift */; };
-		FE03B84F280DF0A30015B1A7 /* LinearLayer.metal in Sources */ = {isa = PBXBuildFile; fileRef = FE03B84E280DF0A20015B1A7 /* LinearLayer.metal */; };
 		FE03B851280E06230015B1A7 /* Conv2DLayer.metal in Sources */ = {isa = PBXBuildFile; fileRef = FE03B850280E06230015B1A7 /* Conv2DLayer.metal */; };
 		FE4F753827EA66AF00484934 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F753727EA66AF00484934 /* AppDelegate.swift */; };
 		FE4F753D27EA66AF00484934 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE4F753B27EA66AF00484934 /* Main.storyboard */; };
@@ -38,7 +37,6 @@
 		FE03B83A280634650015B1A7 /* MaxPool2DLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxPool2DLayer.swift; sourceTree = "<group>"; };
 		FE03B83C28066FC80015B1A7 /* ReLu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReLu.swift; sourceTree = "<group>"; };
 		FE03B843280DD93C0015B1A7 /* MTLUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTLUtils.swift; sourceTree = "<group>"; };
-		FE03B84E280DF0A20015B1A7 /* LinearLayer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = LinearLayer.metal; sourceTree = "<group>"; };
 		FE03B850280E06230015B1A7 /* Conv2DLayer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Conv2DLayer.metal; sourceTree = "<group>"; };
 		FE4F752C27EA669C00484934 /* ReLu.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ReLu.metal; sourceTree = "<group>"; };
 		FE4F752E27EA669C00484934 /* BridgeTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgeTypes.h; sourceTree = "<group>"; };
@@ -96,7 +94,6 @@
 				15C804EE280E64F9008E24B2 /* MaxPooling.metal */,
 				FE4F752E27EA669C00484934 /* BridgeTypes.h */,
 				FE4F752C27EA669C00484934 /* ReLu.metal */,
-				FE03B84E280DF0A20015B1A7 /* LinearLayer.metal */,
 				FE03B850280E06230015B1A7 /* Conv2DLayer.metal */,
 				FEE6543E281A5A8A0022C8C1 /* MatMul.metal */,
 			);
@@ -306,7 +303,6 @@
 				FEE6543F281A5A8A0022C8C1 /* MatMul.metal in Sources */,
 				FE03B839280511890015B1A7 /* PaddingMode.swift in Sources */,
 				FE4F756727ECF11C00484934 /* Networks.swift in Sources */,
-				FE03B84F280DF0A30015B1A7 /* LinearLayer.metal in Sources */,
 				FE4F756327EA6BAF00484934 /* BenchmarkViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
