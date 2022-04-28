@@ -7,7 +7,19 @@
 
 import UIKit
 import MetalKit
+func getFile(forResource resource: String, withExtension fileExt: String?){
+    // See if the file exists.
+    let url = URL(fileURLWithPath: resource)
+    let rData = try! Data(contentsOf: url)
+    var rArray: [Float]?
 
+    rData.withUnsafeBytes { (bytes: UnsafePointer<Float>) in
+        rArray = Array(UnsafeBufferPointer(start: bytes, count: rData.count / MemoryLayout<Float>.size))
+    }
+    
+    print(rArray!)
+    print(rData.count)
+}
 // Our iOS specific view controller
 class BenchmarkViewController: UIViewController {
 
@@ -24,11 +36,13 @@ class BenchmarkViewController: UIViewController {
     }
     
     @IBAction func runBenchmark(sender: UIButton) {
-        runLinearNetworkBenchmark()
+        getFile(forResource: "/Users/fachang/tmp2/model/conv1_b_np.bin", withExtension: "bin")
+
+//        runLinearNetworkBenchmark()
         // runConvNetworkBenchmark()
         // runBigConvNetworkBenchmark()
     }
-    
+
     private func runLinearNetworkBenchmark() {
         var startTime = DispatchTime.now()
         let network: TestLinearNetwork = TestLinearNetwork()
