@@ -70,20 +70,21 @@ kernel void conv2d_forward(device float *output [[ buffer(0) ]],
 
 kernel void conv2d_img2col(device float *output [[ buffer(0) ]],
                            const device float *input [[ buffer(1) ]],
-                           const device Conv2DImg2ColParams *params [[ buffer(4) ]],
+                           const device Conv2DLayerParams *params [[ buffer(2) ]],
+                           const device uint *batch_idx_ptr [[ buffer(3) ]],
                            uint thread_id [[ thread_position_in_grid ]]) {
 
-    if (thread_id >= params->n_input_channels * params->output_width * params->output_height) {
+    if (thread_id >= (params->n_input_channels * params->output_width * params->output_height)) {
         return;
     }
-    
+
     uint input_channel_idx = thread_id / (params->output_height * params->output_width);
     uint output_flatten_idx = thread_id % (params->output_height * params->output_width);
     uint output_col = output_flatten_idx % params->output_width;
     uint output_row = output_flatten_idx / params->output_width;
     uint input_col_start = output_col * params->stride_width - params->padding;
     uint input_row_start = output_row * params->stride_height - params->padding;
-    uint batch_idx = params->batch_id;
+    uint batch_idx = *batch_idx_ptr;
 
     for (uint i = 0; i < params->kernel_size; i++) {
         for (uint j = 0; j < params->kernel_size; j++) {
@@ -98,7 +99,14 @@ kernel void conv2d_img2col(device float *output [[ buffer(0) ]],
                     (input_col_start + j)
                 ];
             }
-            output[thread_id] = val;
+            output[
+                input_channel_idx * (params->kernel_size * params->kernel_size *
+                                     params->output_height * params->output_width) +
+                i * (params->kernel_size * params->output_height * params->output_width) +
+                j * (params->output_height * params->output_width) +
+                output_row * (params->output_width) +
+                output_col
+            ] = val;
         }
     }
 }

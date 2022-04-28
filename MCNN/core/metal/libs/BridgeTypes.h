@@ -53,20 +53,5 @@ struct Conv2DLayerParams {
     uint threadgroups_per_grid_dim4;
 };
 
-struct Conv2DImg2ColParams {
-    uint n_input_channels;
-    uint n_output_channels;
-    uint output_height;
-    uint output_width;
-    uint input_height;
-    uint input_width;
-    uint kernel_size;
-    uint stride_height;
-    uint stride_width;
-    uint padding;
-    bool bias;
-    uint batch_id;
-};
-
 #endif /* BridgeTypes_h */
 

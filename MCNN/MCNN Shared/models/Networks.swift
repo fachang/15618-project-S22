@@ -33,14 +33,14 @@ public class TestLinearNetwork {
     }
 }
 
-public class TestConvNetwork {
+public class TestNaiveConvNetwork {
     public typealias DataType = Float32
     
     private let layers: [NetworkModuleProtocol]
     
     public init(gpu: Bool = false) {
         self.layers = [
-            Conv2DLayer(nInputChannels: 3, nOutputChannels: 2, bias: true,
+            Conv2DLayerNaive(nInputChannels: 3, nOutputChannels: 2, bias: true,
                         kernelSize: 3, strideHeight: 2, strideWidth: 1,
                         padding: 1, paddingMode: PaddingMode.zeros, gpu: gpu),
         ];
@@ -55,7 +55,29 @@ public class TestConvNetwork {
     }
 }
 
-public class TestBigConvNetwork {
+public class TestImg2colConvNetwork {
+    public typealias DataType = Float32
+    
+    private let layers: [NetworkModuleProtocol]
+    
+    public init(gpu: Bool = false) {
+        self.layers = [
+            Conv2DLayerImg2col(nInputChannels: 3, nOutputChannels: 2, bias: true,
+                        kernelSize: 3, strideHeight: 2, strideWidth: 1,
+                        padding: 1, paddingMode: PaddingMode.zeros, gpu: gpu),
+        ];
+    }
+    
+    public func forward(input: Tensor<DataType>) -> Tensor<DataType> {
+        var curTensor: Tensor<DataType> = input
+        for nnModule in self.layers {
+            curTensor = nnModule.forward(input: curTensor)
+        }
+        return curTensor
+    }
+}
+
+public class TestNaiveBigConvNetwork {
     public typealias DataType = Float32
     
     private let layers: [NetworkModuleProtocol]
@@ -73,7 +95,7 @@ public class TestBigConvNetwork {
         ]
 
         self.layers = [
-            Conv2DLayer(nInputChannels: 1, nOutputChannels: 32, bias: true,
+            Conv2DLayerNaive(nInputChannels: 1, nOutputChannels: 32, bias: true,
                         kernelSize: 5, strideHeight: 1, strideWidth: 1,
                         padding: 2, paddingMode: PaddingMode.zeros, gpu: gpu,
                         initKernels: initKernelsData1, initBias: initBiasData1),
