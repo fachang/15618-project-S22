@@ -81,6 +81,7 @@ public class Tensor<T>: CustomStringConvertible {
     
     public func printData() {
         Tensor<T>.printDataHelper(arr: data, shape: shape, dimIdx: 0, arrDimStart: 0)
+        print()
     }
     
     private static func printDataHelper(arr: [T], shape: [Int], dimIdx: Int, arrDimStart: Int) -> Int {

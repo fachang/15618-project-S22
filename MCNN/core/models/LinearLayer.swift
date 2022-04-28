@@ -61,28 +61,33 @@ public class LinearLayer: NetworkModuleProtocol {
         let cmdEncoder = cmdBuffer.makeComputeCommandEncoder()!
         assert(MTLUtils.addComputePipeline(cmdEncoder: cmdEncoder,
                                            kernelLibrary: MTLCommons.defaultLib,
-                                           kernelFuncName: "linear_forward") == true)
+                                           kernelFuncName: "matmul") == true)
 
         let batchSize = input.getShape()[0]
         let result = Tensor<DataType>(shape: [batchSize, nOutputFeatures], initValue: 0)
         result.copyToGPU()
-        var layerParamsCPU = LinearLayerParams(
-            batch_size: uint(batchSize), n_input_channel: uint(nInputFeatures),
-            n_output_channel: uint(nOutputFeatures), bias: (bias != nil))
-        let layerParamsDevice = MTLUtils.copyToGPU(
-            dataPtr: &layerParamsCPU, size: MemoryLayout<LinearLayerParams>.stride)
+        var matMulParamsCPU = MatMulParams(
+            mat1_height: uint(batchSize),
+            mat1_width: uint(nInputFeatures),
+            mat2_width: uint(nOutputFeatures),
+            mat1_bias: false,
+            mat2_bias: (bias != nil),
+            output_offset: 0
+        )
+        let matMulParamsGPU = MTLUtils.copyToGPU(
+            dataPtr: &matMulParamsCPU, size: MemoryLayout<MatMulParams>.stride)
 
         cmdEncoder.setBuffer(result.dataGPU, offset: 0, index: 0)
         cmdEncoder.setBuffer(input.dataGPU, offset: 0, index: 1)
         cmdEncoder.setBuffer(params.dataGPU, offset: 0, index: 2)
         cmdEncoder.setBuffer((bias == nil) ? nil : bias!.dataGPU, offset: 0, index: 3)
-        cmdEncoder.setBuffer(layerParamsDevice, offset: 0, index: 4)
+        cmdEncoder.setBuffer(matMulParamsGPU, offset: 0, index: 4)
         
         let nthreadsPerBlock = MTLSize(
             width: LinearLayer.GROUP_W, height: LinearLayer.GROUP_W, depth: 1)
         let nblocks = MTLSize(
             width: (nOutputFeatures + LinearLayer.GROUP_W - 1) / LinearLayer.GROUP_W,
-            height: batchSize, depth: 1)
+            height: (batchSize + LinearLayer.GROUP_W - 1) / LinearLayer.GROUP_W, depth: 1)
         cmdEncoder.dispatchThreadgroups(nblocks, threadsPerThreadgroup: nthreadsPerBlock)
         
         cmdEncoder.endEncoding()

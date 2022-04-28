@@ -18,13 +18,14 @@
 #import <Foundation/Foundation.h>
 #endif
 
-struct LinearLayerParams {
-    uint batch_size;
-    uint n_input_channel;
-    uint n_output_channel;
-    bool bias;
+struct MatMulParams {
+    uint mat1_height;
+    uint mat1_width;
+    uint mat2_width;
+    bool mat1_bias;
+    bool mat2_bias;
+    uint output_offset;
 };
-
 
 struct PoolingLayerParams {
     uint h_in;
@@ -37,6 +38,7 @@ struct PoolingLayerParams {
     uint padding;
     uint batchSize;
 };
+
 struct Conv2DLayerParams {
     uint batch_size;
     uint n_input_channels;
@@ -51,7 +53,6 @@ struct Conv2DLayerParams {
     uint padding;
     bool bias;
     uint threadgroups_per_grid_dim4;
-
 };
 
 #endif /* BridgeTypes_h */
