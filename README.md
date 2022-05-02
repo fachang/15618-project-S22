@@ -60,3 +60,14 @@ We have implemented CUDA version for CNN and the following is the speedup using 
 
 ### Issues that concern us the most
 The Metal implementation concern us the most because we find that its documentation resource is rarely limited. Although for now, we have read its official document, but we are not sure whether we will encounter problems which not stated in the document in the future.
+
+### Final report data
+![image](https://user-images.githubusercontent.com/7065983/166180549-c78abdfd-5435-4405-aeec-6ca7d817f96b.png)
+
+
+![image](https://user-images.githubusercontent.com/7065983/166180563-15688e2a-3cc0-419e-9dee-0a72286de3b6.png)
+
+![image](https://user-images.githubusercontent.com/7065983/166180621-a8847f09-6cc3-4bc6-9fa8-025b20b99474.png)
+
+### Link for pretrained model
+https://drive.google.com/drive/u/1/folders/1ynqzZki838f2HIABVC8DEBW6HvlWuw6_
