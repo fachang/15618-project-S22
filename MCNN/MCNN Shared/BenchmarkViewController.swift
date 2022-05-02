@@ -8,6 +8,116 @@
 import UIKit
 import MetalKit
 
+func getFile(forResource resource: String, withExtension fileExt: String?)->[Float]{
+    // See if the file exists.
+    let url = URL(fileURLWithPath: resource)
+    let rData = try! Data(contentsOf: url)
+    var rArray: [Float]?
+
+    rData.withUnsafeBytes { (bytes: UnsafePointer<Float>) in
+        rArray = Array(UnsafeBufferPointer(start: bytes, count: rData.count / MemoryLayout<Float>.size))
+    }
+    
+    return rArray!
+}
+/*
+ Model
+ VGG(
+   (features): Sequential(
+     (0): Conv2d(3, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+     (1): ReLU(inplace=True)
+     (2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+     (3): ReLU(inplace=True)
+     (4): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+     (5): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+     (6): ReLU(inplace=True)
+     (7): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+     (8): ReLU(inplace=True)
+     (9): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+     (10): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+     (11): ReLU(inplace=True)
+     (12): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+     (13): ReLU(inplace=True)
+     (14): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+   )
+   (avgpool): AdaptiveAvgPool2d(output_size=(4, 4))
+   (classifier): Sequential(
+     (0): Linear(in_features=8192, out_features=4096, bias=True)
+     (1): ReLU(inplace=True)
+     (2): Linear(in_features=4096, out_features=4096, bias=True)
+     (3): ReLU(inplace=True)
+     (4): Linear(in_features=4096, out_features=10, bias=True)
+   )
+ )
+ */
+/*
+ footprint
+ unsigned char input[4*3*32*32];
+ unsigned char output[4*10];
+
+ unsigned char conv1_w[4*128*3*3*3];
+ unsigned char conv1_b[4*128];
+ unsigned char conv2_w[4*128*128*3*3];
+ unsigned char conv2_b[4*128];
+ unsigned char conv3_w[4*256*128*3*3];
+ unsigned char conv3_b[4*256];
+ unsigned char conv4_w[4*256*256*3*3];
+ unsigned char conv4_b[4*256];
+ unsigned char conv5_w[4*512*256*3*3];
+ unsigned char conv5_b[4*512];
+ unsigned char conv6_w[4*512*512*3*3];
+ unsigned char conv6_b[4*512];
+
+
+ unsigned char linear1_w[4*4096*8192];
+ unsigned char linear1_b[4*4096];
+ unsigned char linear2_w[4*4096*4096];
+ unsigned char linear2_b[4*4096];
+ unsigned char linear3_w[4*10*4096];
+ unsigned char linear3_b[4*10];
+ */
+func getWandB() -> [[Float]] {
+    let input_arary = getFile(forResource: "/Users/fachang/tmp2/model/input.bin", withExtension: "bin")
+    let output_arary = getFile(forResource: "/Users/fachang/tmp2/model/output.bin", withExtension: "bin")
+    let conv1_w = getFile(forResource: "/Users/fachang/tmp2/model/conv1_w_np.bin", withExtension: "bin")
+    let conv1_b = getFile(forResource: "/Users/fachang/tmp2/model/conv1_b_np.bin", withExtension: "bin")
+    let conv2_w = getFile(forResource: "/Users/fachang/tmp2/model/conv2_w_np.bin", withExtension: "bin")
+    let conv2_b = getFile(forResource: "/Users/fachang/tmp2/model/conv2_b_np.bin", withExtension: "bin")
+    let conv3_w = getFile(forResource: "/Users/fachang/tmp2/model/conv3_w_np.bin", withExtension: "bin")
+    let conv3_b = getFile(forResource: "/Users/fachang/tmp2/model/conv3_b_np.bin", withExtension: "bin")
+    let conv4_w = getFile(forResource: "/Users/fachang/tmp2/model/conv4_w_np.bin", withExtension: "bin")
+    let conv4_b = getFile(forResource: "/Users/fachang/tmp2/model/conv4_b_np.bin", withExtension: "bin")
+    let conv5_w = getFile(forResource: "/Users/fachang/tmp2/model/conv5_w_np.bin", withExtension: "bin")
+    let conv5_b = getFile(forResource: "/Users/fachang/tmp2/model/conv5_b_np.bin", withExtension: "bin")
+    let conv6_w = getFile(forResource: "/Users/fachang/tmp2/model/conv6_w_np.bin", withExtension: "bin")
+    let conv6_b = getFile(forResource: "/Users/fachang/tmp2/model/conv6_b_np.bin", withExtension: "bin")
+    let linear1_w = getFile(forResource: "/Users/fachang/tmp2/model/linear1_w_np.bin", withExtension: "bin")
+    let linear1_b = getFile(forResource: "/Users/fachang/tmp2/model/linear1_b_np.bin", withExtension: "bin")
+    let linear2_w = getFile(forResource: "/Users/fachang/tmp2/model/linear2_w_np.bin", withExtension: "bin")
+    let linear2_b = getFile(forResource: "/Users/fachang/tmp2/model/linear2_b_np.bin", withExtension: "bin")
+    let linear3_w = getFile(forResource: "/Users/fachang/tmp2/model/linear3_w_np.bin", withExtension: "bin")
+    let linear3_b = getFile(forResource: "/Users/fachang/tmp2/model/linear3_b_np.bin", withExtension: "bin")
+    return [input_arary,
+            output_arary,
+            conv1_w,
+            conv1_b,
+            conv2_w,
+            conv2_b,
+            conv3_w,
+            conv3_b,
+            conv4_w,
+            conv4_b,
+            conv5_w,
+            conv5_b,
+            conv6_w,
+            conv6_b,
+            linear1_w,
+            linear1_b,
+            linear2_w,
+            linear2_b,
+            linear3_w,
+            linear3_b]
+}
 // Our iOS specific view controller
 class BenchmarkViewController: UIViewController {
 
@@ -24,7 +134,11 @@ class BenchmarkViewController: UIViewController {
     }
     
     @IBAction func runBenchmark(sender: UIButton) {
-        // runLinearNetworkBenchmark()
+
+        let model_wgt = getWandB()
+        print(model_wgt[model_wgt.count-1].count)
+//        runLinearNetworkBenchmark()
+
         // runConvNetworkBenchmark()
         // runBigConvNetworkBenchmark()
         runConvNetworkBenchmark_3_96_11()
