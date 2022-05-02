@@ -70,4 +70,4 @@ The Metal implementation concern us the most because we find that its documentat
 ![image](https://user-images.githubusercontent.com/7065983/166180621-a8847f09-6cc3-4bc6-9fa8-025b20b99474.png)
 
 ### Link for pretrained model
-https://drive.google.com/drive/u/1/folders/1ynqzZki838f2HIABVC8DEBW6HvlWuw6_
+https://drive.google.com/drive/folders/1ynqzZki838f2HIABVC8DEBW6HvlWuw6_?usp=sharing
