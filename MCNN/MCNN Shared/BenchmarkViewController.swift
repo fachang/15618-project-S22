@@ -164,14 +164,33 @@ class BenchmarkViewController: UIViewController {
     
     private func runLeNetBenchmark() {
         var metricString = ""
-        
         let cpuTester = LeNetBenchmark(gpu: false)
-        metricString += cpuTester.runFullNetwork().description
-        
-        metricString += "--------------\n"
-        
         let gpuTester = LeNetBenchmark(gpu: true)
-        metricString += gpuTester.runFullNetwork().description
+        
+        metricString += "+---------- Conv2D Layer ----------+\n"
+        metricString += ("[CPU] " + cpuTester.runConv2D().description)
+        metricString += ("[GPU] " + gpuTester.runConv2D().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+-------- Max Pool2D Layer --------+\n"
+        metricString += ("[CPU] " + cpuTester.runMaxPool2D().description)
+        metricString += ("[GPU] " + gpuTester.runMaxPool2D().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+---------- Linear Layer ----------+\n"
+        metricString += ("[CPU] " + cpuTester.runFC().description)
+        metricString += ("[GPU] " + gpuTester.runFC().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+----------- ReLU Layer -----------+\n"
+        metricString += ("[CPU] " + cpuTester.runReLu().description)
+        metricString += ("[GPU] " + gpuTester.runReLu().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+---------- Full Network ----------+\n"
+        metricString += ("[CPU] " + cpuTester.runFullNetwork().description)
+        metricString += ("[GPU] " + gpuTester.runFullNetwork().description)
+        metricString += "+----------------------------------+\n\n"
         
         benchmarkTextLabel.text = metricString
     }

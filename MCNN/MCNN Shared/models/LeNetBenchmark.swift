@@ -20,10 +20,9 @@ public class LeNetBenchmark {
     }
 
     public func runFullNetwork() -> Metrics {
-        let inputData: [DataType] = (0..<(batchSize * 1 * 32 * 32)).map { _ in .random(in: 0..<256) }
+        let input: Tensor<DataType> = TensorBuilder.buildRandFloat32Tensor([batchSize, 1, 32, 32], 0, 256)
         
         var startTime = DispatchTime.now()
-        let input = Tensor<DataType>(shape: [batchSize, 1, 32, 32], data: inputData)
         if (gpu) {
             input.copyToGPU()
         }
@@ -40,4 +39,91 @@ public class LeNetBenchmark {
 
         return Metrics(initElapseNanosecs: initElapsedTime, forwardElapseNanosecs: forwardElapsedTime)
     }
+    
+    public func runConv2D() -> Metrics {
+        let input: Tensor<DataType> = TensorBuilder.buildRandFloat32Tensor([batchSize, 1, 32, 32], 0, 256)
+
+        var startTime = DispatchTime.now()
+        if (gpu) {
+            input.copyToGPU()
+        }
+        let network = Conv2DLayerImg2col(nInputChannels: 1, nOutputChannels: 6, bias: true,
+                                         kernelSize: 5, strideHeight: 1, strideWidth: 1,
+                                         padding: 0, paddingMode: PaddingMode.zeros, gpu: gpu)
+        let initElapsedTime = DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds
+        
+        startTime = DispatchTime.now()
+        let forwardResult: Tensor<DataType> = network.forward(input: input)
+        let forwardElapsedTime = DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds
+        if (gpu) {
+            forwardResult.copyToCPU()
+        }
+        // forwardResult.printData()
+
+        return Metrics(initElapseNanosecs: initElapsedTime, forwardElapseNanosecs: forwardElapsedTime)
+    }
+    
+    public func runMaxPool2D() -> Metrics {
+        let input: Tensor<DataType> = TensorBuilder.buildRandFloat32Tensor([batchSize, 3, 112, 112], 0, 1)
+
+        var startTime = DispatchTime.now()
+        if (gpu) {
+            input.copyToGPU()
+        }
+        let network = MaxPool2DLayer(kernelSize: 2, strideHeight: 2, strideWidth: 2, padding: 0, gpu: gpu)
+        let initElapsedTime = DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds
+        
+        startTime = DispatchTime.now()
+        let forwardResult: Tensor<DataType> = network.forward(input: input)
+        let forwardElapsedTime = DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds
+        if (gpu) {
+            forwardResult.copyToCPU()
+        }
+        // forwardResult.printData()
+
+        return Metrics(initElapseNanosecs: initElapsedTime, forwardElapseNanosecs: forwardElapsedTime)
+    }
+    
+    public func runFC() -> Metrics {
+        let input: Tensor<DataType> = TensorBuilder.buildRandFloat32Tensor([batchSize, 120], 0, 1)
+
+        var startTime = DispatchTime.now()
+        if (gpu) {
+            input.copyToGPU()
+        }
+        let network = LinearLayer(nInputFeatures: 120, nOutputFeatures: 84, bias: true, gpu: gpu)
+        let initElapsedTime = DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds
+        
+        startTime = DispatchTime.now()
+        let forwardResult: Tensor<DataType> = network.forward(input: input)
+        let forwardElapsedTime = DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds
+        if (gpu) {
+            forwardResult.copyToCPU()
+        }
+        // forwardResult.printData()
+
+        return Metrics(initElapseNanosecs: initElapsedTime, forwardElapseNanosecs: forwardElapsedTime)
+    }
+    
+    public func runReLu() -> Metrics {
+        let input: Tensor<DataType> = TensorBuilder.buildRandFloat32Tensor([batchSize, 3, 28, 28], 0, 1)
+
+        var startTime = DispatchTime.now()
+        if (gpu) {
+            input.copyToGPU()
+        }
+        let network = ReLu(gpu: gpu)
+        let initElapsedTime = DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds
+        
+        startTime = DispatchTime.now()
+        let forwardResult: Tensor<DataType> = network.forward(input: input)
+        let forwardElapsedTime = DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds
+        if (gpu) {
+            forwardResult.copyToCPU()
+        }
+        // forwardResult.printData()
+
+        return Metrics(initElapseNanosecs: initElapsedTime, forwardElapseNanosecs: forwardElapsedTime)
+    }
+
 }
