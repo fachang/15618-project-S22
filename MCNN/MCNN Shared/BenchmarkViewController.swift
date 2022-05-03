@@ -124,25 +124,42 @@ class BenchmarkViewController: UIViewController {
     public typealias DataType = Float32
     
     @IBOutlet var benchmarkTextLabel: UILabel!
-    @IBOutlet var runBtn: UIButton!
+    @IBOutlet var leNetBtn: UIButton!
+    @IBOutlet var vggNetBtn: UIButton!
+    @IBOutlet var alexNetBtn: UIButton!
+    @IBOutlet var adhotBtn: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         benchmarkTextLabel.text = "CNN Forward Benchmark"
-        runBtn.setTitle("RUN", for: .normal)
+        leNetBtn.setTitle("LeNet", for: .normal)
+        vggNetBtn.setTitle("VGGNet", for: .normal)
+        alexNetBtn.setTitle("AlexNet", for: .normal)
+        adhotBtn.setTitle("Ad-hoc", for: .normal)
     }
     
     @IBAction func runBenchmark(sender: UIButton) {
 
         let model_wgt = getWandB()
         print(model_wgt[model_wgt.count-1].count)
+    }
 
+    @IBAction func leNetBtnHandler(sender: UIButton) {
         runLeNetBenchmark()
+    }
+    
+    @IBAction func vggNetBtnHandler(sender: UIButton) {
+    }
+    
+    @IBAction func alexNetBtnHandler(sender: UIButton) {
+    }
+    
+    @IBAction func adhocBtnHandler(sender: UIButton) {
         // runLinearNetworkBenchmark()
         // runConvNetworkBenchmark()
         // runBigConvNetworkBenchmark()
-        // runConvNetworkBenchmark_3_96_11()
+        runConvNetworkBenchmark_3_96_11()
     }
     
     private func runLeNetBenchmark() {
