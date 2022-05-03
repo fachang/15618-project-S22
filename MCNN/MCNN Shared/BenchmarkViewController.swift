@@ -137,11 +137,26 @@ class BenchmarkViewController: UIViewController {
 
         let model_wgt = getWandB()
         print(model_wgt[model_wgt.count-1].count)
-//        runLinearNetworkBenchmark()
 
+        runLeNetBenchmark()
+        // runLinearNetworkBenchmark()
         // runConvNetworkBenchmark()
         // runBigConvNetworkBenchmark()
-        runConvNetworkBenchmark_3_96_11()
+        // runConvNetworkBenchmark_3_96_11()
+    }
+    
+    private func runLeNetBenchmark() {
+        var metricString = ""
+        
+        let cpuTester = LeNetBenchmark(gpu: false)
+        metricString += cpuTester.runFullNetwork().description
+        
+        metricString += "--------------\n"
+        
+        let gpuTester = LeNetBenchmark(gpu: true)
+        metricString += gpuTester.runFullNetwork().description
+        
+        benchmarkTextLabel.text = metricString
     }
     
     private func runLinearNetworkBenchmark() {

@@ -21,11 +21,14 @@
 		FE4F754F27EA66AF00484934 /* ReLu.metal in Sources */ = {isa = PBXBuildFile; fileRef = FE4F752C27EA669C00484934 /* ReLu.metal */; };
 		FE4F755327EA66AF00484934 /* BridgeTypes.h in Resources */ = {isa = PBXBuildFile; fileRef = FE4F752E27EA669C00484934 /* BridgeTypes.h */; };
 		FE4F756327EA6BAF00484934 /* BenchmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756227EA6BAF00484934 /* BenchmarkViewController.swift */; };
-		FE4F756727ECF11C00484934 /* Networks.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756627ECF11B00484934 /* Networks.swift */; };
+		FE4F756727ECF11C00484934 /* SimpleNetworks.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756627ECF11B00484934 /* SimpleNetworks.swift */; };
 		FE4F756B27ECF57F00484934 /* Tensor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756A27ECF57E00484934 /* Tensor.swift */; };
 		FE4F756D27ED1FCD00484934 /* LinearLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F756C27ED1FCA00484934 /* LinearLayer.swift */; };
 		FE4F757227ED26CF00484934 /* NetworkModuleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F757127ED26CF00484934 /* NetworkModuleProtocol.swift */; };
 		FE4F757827ED2CE800484934 /* MTLCommons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4F757727ED2CE800484934 /* MTLCommons.swift */; };
+		FEAE46932820C69A00E00EE1 /* LeNetBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAE46922820C69A00E00EE1 /* LeNetBenchmark.swift */; };
+		FEAE46962820D3DD00E00EE1 /* LeNet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAE46952820D3DD00E00EE1 /* LeNet.swift */; };
+		FEAE46982820D7FE00E00EE1 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAE46972820D7FE00E00EE1 /* Metrics.swift */; };
 		FEE6543F281A5A8A0022C8C1 /* MatMul.metal in Sources */ = {isa = PBXBuildFile; fileRef = FEE6543E281A5A8A0022C8C1 /* MatMul.metal */; };
 /* End PBXBuildFile section */
 
@@ -46,11 +49,14 @@
 		FE4F753F27EA66AF00484934 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FE4F754527EA66AF00484934 /* MCNN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MCNN.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE4F756227EA6BAF00484934 /* BenchmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkViewController.swift; sourceTree = "<group>"; };
-		FE4F756627ECF11B00484934 /* Networks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networks.swift; sourceTree = "<group>"; };
+		FE4F756627ECF11B00484934 /* SimpleNetworks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleNetworks.swift; sourceTree = "<group>"; };
 		FE4F756A27ECF57E00484934 /* Tensor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tensor.swift; sourceTree = "<group>"; };
 		FE4F756C27ED1FCA00484934 /* LinearLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearLayer.swift; sourceTree = "<group>"; };
 		FE4F757127ED26CF00484934 /* NetworkModuleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkModuleProtocol.swift; sourceTree = "<group>"; };
 		FE4F757727ED2CE800484934 /* MTLCommons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTLCommons.swift; sourceTree = "<group>"; };
+		FEAE46922820C69A00E00EE1 /* LeNetBenchmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeNetBenchmark.swift; sourceTree = "<group>"; };
+		FEAE46952820D3DD00E00EE1 /* LeNet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeNet.swift; sourceTree = "<group>"; };
+		FEAE46972820D7FE00E00EE1 /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
 		FEE6543E281A5A8A0022C8C1 /* MatMul.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MatMul.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,7 +118,9 @@
 		FE03B84D280DEBC30015B1A7 /* models */ = {
 			isa = PBXGroup;
 			children = (
-				FE4F756627ECF11B00484934 /* Networks.swift */,
+				FEAE46942820D3B200E00EE1 /* networks */,
+				FEAE46922820C69A00E00EE1 /* LeNetBenchmark.swift */,
+				FEAE46972820D7FE00E00EE1 /* Metrics.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -186,6 +194,15 @@
 				FE03B843280DD93C0015B1A7 /* MTLUtils.swift */,
 			);
 			path = utils;
+			sourceTree = "<group>";
+		};
+		FEAE46942820D3B200E00EE1 /* networks */ = {
+			isa = PBXGroup;
+			children = (
+				FE4F756627ECF11B00484934 /* SimpleNetworks.swift */,
+				FEAE46952820D3DD00E00EE1 /* LeNet.swift */,
+			);
+			path = networks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -294,16 +311,19 @@
 				FE03B83028038EE20015B1A7 /* TensorUtilsCPU.swift in Sources */,
 				FE4F757827ED2CE800484934 /* MTLCommons.swift in Sources */,
 				FE03B844280DD93C0015B1A7 /* MTLUtils.swift in Sources */,
+				FEAE46982820D7FE00E00EE1 /* Metrics.swift in Sources */,
 				FE4F756D27ED1FCD00484934 /* LinearLayer.swift in Sources */,
 				FE4F757227ED26CF00484934 /* NetworkModuleProtocol.swift in Sources */,
 				FE4F753827EA66AF00484934 /* AppDelegate.swift in Sources */,
 				FE03B8362804FD990015B1A7 /* Conv2DLayer.swift in Sources */,
 				FE03B851280E06230015B1A7 /* Conv2DLayer.metal in Sources */,
+				FEAE46932820C69A00E00EE1 /* LeNetBenchmark.swift in Sources */,
 				15C804EF280E64F9008E24B2 /* MaxPooling.metal in Sources */,
 				FEE6543F281A5A8A0022C8C1 /* MatMul.metal in Sources */,
 				FE03B839280511890015B1A7 /* PaddingMode.swift in Sources */,
-				FE4F756727ECF11C00484934 /* Networks.swift in Sources */,
+				FE4F756727ECF11C00484934 /* SimpleNetworks.swift in Sources */,
 				FE4F756327EA6BAF00484934 /* BenchmarkViewController.swift in Sources */,
+				FEAE46962820D3DD00E00EE1 /* LeNet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

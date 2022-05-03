@@ -9,8 +9,6 @@ import Foundation
 import Metal
 
 public class LinearLayer: NetworkModuleProtocol {
-    private static let GROUP_W: Int = 32
-
     private let nInputFeatures: Int
     private let nOutputFeatures: Int
     private let gpu: Bool
