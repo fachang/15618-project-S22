@@ -32,6 +32,7 @@
 		FEAE469A28210AA900E00EE1 /* TensorBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAE469928210AA900E00EE1 /* TensorBuilder.swift */; };
 		FEAE469C28210EE000E00EE1 /* VGGBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAE469B28210EE000E00EE1 /* VGGBenchmark.swift */; };
 		FEAE469E28210F9600E00EE1 /* VGG.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAE469D28210F9600E00EE1 /* VGG.swift */; };
+		FEAE46A028211D9C00E00EE1 /* AlexNetBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAE469F28211D9C00E00EE1 /* AlexNetBenchmark.swift */; };
 		FEE6543F281A5A8A0022C8C1 /* MatMul.metal in Sources */ = {isa = PBXBuildFile; fileRef = FEE6543E281A5A8A0022C8C1 /* MatMul.metal */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +64,7 @@
 		FEAE469928210AA900E00EE1 /* TensorBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TensorBuilder.swift; sourceTree = "<group>"; };
 		FEAE469B28210EE000E00EE1 /* VGGBenchmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VGGBenchmark.swift; sourceTree = "<group>"; };
 		FEAE469D28210F9600E00EE1 /* VGG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VGG.swift; sourceTree = "<group>"; };
+		FEAE469F28211D9C00E00EE1 /* AlexNetBenchmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlexNetBenchmark.swift; sourceTree = "<group>"; };
 		FEE6543E281A5A8A0022C8C1 /* MatMul.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MatMul.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,6 +130,7 @@
 				FEAE46972820D7FE00E00EE1 /* Metrics.swift */,
 				FEAE46922820C69A00E00EE1 /* LeNetBenchmark.swift */,
 				FEAE469B28210EE000E00EE1 /* VGGBenchmark.swift */,
+				FEAE469F28211D9C00E00EE1 /* AlexNetBenchmark.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				FE4F756D27ED1FCD00484934 /* LinearLayer.swift in Sources */,
 				FE4F757227ED26CF00484934 /* NetworkModuleProtocol.swift in Sources */,
 				FE4F753827EA66AF00484934 /* AppDelegate.swift in Sources */,
+				FEAE46A028211D9C00E00EE1 /* AlexNetBenchmark.swift in Sources */,
 				FE03B8362804FD990015B1A7 /* Conv2DLayer.swift in Sources */,
 				FEAE469E28210F9600E00EE1 /* VGG.swift in Sources */,
 				FE03B851280E06230015B1A7 /* Conv2DLayer.metal in Sources */,
