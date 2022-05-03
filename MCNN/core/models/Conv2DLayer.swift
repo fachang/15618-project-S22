@@ -254,12 +254,55 @@ public class Conv2DLayerImg2col: NetworkModuleProtocol {
         let batchSize: Int = inputShape[0]
         let inputHeight: Int = inputShape[2]
         let inputWidth: Int = inputShape[3]
-        let outputHeight: Int = Int(floor(Double(inputHeight + 2 * padding - kernelSize) / Double(strideHeight))) + 1
-        let outputWidth: Int = Int(floor(Double(inputWidth + 2 * padding - kernelSize) / Double(strideWidth))) + 1
-        let result: Tensor<DataType> = Tensor<DataType>(
-            shape: [batchSize, nOutputChannels, outputHeight, outputWidth],
+        let outputHeight: Int = Int(floor(
+            Double(inputHeight + 2 * padding - kernelSize) / Double(strideHeight))) + 1
+        let outputWidth: Int = Int(floor(
+            Double(inputWidth + 2 * padding - kernelSize) / Double(strideWidth))) + 1
+        var result: Tensor<DataType> = Tensor<DataType>(
+            shape: [batchSize, nOutputChannels, outputHeight * outputWidth],
             initValue: DataType.zero);
-        return result;
+
+        for batchIdx in 0..<batchSize {
+            let img2colBuffer = cpuImg2col(
+                input: input, inputHeight: inputHeight, inputWidth: inputWidth,
+                outputHeight: outputHeight, outputWidth: outputWidth, batchIdx: batchIdx)
+
+            TensorUtilsCPU.matMul(result: &result, resultDimStart: batchIdx,
+                                  t1: self.kernels, t2: img2colBuffer)
+        }
+        result.reshape(shape: [batchSize, nOutputChannels, outputHeight, outputWidth])
+        return result
+    }
+    
+    private func cpuImg2col(input: Tensor<DataType>,
+                            inputHeight: Int, inputWidth: Int, outputHeight: Int, outputWidth: Int,
+                                                            // these params are to approximate gpu version
+                            batchIdx: Int) -> Tensor<DataType> {
+        let output: Tensor<DataType> = Tensor<DataType>(
+            shape: [nInputChannels, kernelSize, kernelSize, outputHeight, outputWidth],
+            initValue: DataType.zero)
+
+        for inputChannelIdx in 0..<nInputChannels {
+            for i in 0..<outputHeight {
+                for j in 0..<outputWidth {
+                    let inputColStart = j * strideWidth - padding;
+                    let inputRowStart = i * strideHeight - padding;
+                    for m in 0..<kernelSize {
+                        for n in 0..<kernelSize {
+                            var val: DataType = DataType.zero
+                            if (inputRowStart + m >= 0 && inputRowStart + m < inputHeight &&
+                                inputColStart + n >= 0 && inputColStart + n < inputWidth) {
+                                val = input.getData(idx: [batchIdx, inputChannelIdx,
+                                                          inputRowStart + m, inputColStart + n])
+                            }
+                            output.setData(idx: [inputChannelIdx, m, n, i, j], value: val)
+                        }
+                    }
+                }
+            }
+        }
+        output.reshape(shape: [nInputChannels * kernelSize * kernelSize, outputHeight * outputWidth])
+        return output
     }
     
     private func gpuForward(input: Tensor<DataType>) -> Tensor<DataType> {
@@ -269,8 +312,10 @@ public class Conv2DLayerImg2col: NetworkModuleProtocol {
         let batchSize: Int = inputShape[0]
         let inputHeight: Int = inputShape[2]
         let inputWidth: Int = inputShape[3]
-        let outputHeight: Int = Int(floor(Double(inputHeight + 2 * padding - kernelSize) / Double(strideHeight))) + 1
-        let outputWidth: Int = Int(floor(Double(inputWidth + 2 * padding - kernelSize) / Double(strideWidth))) + 1
+        let outputHeight: Int = Int(floor(
+            Double(inputHeight + 2 * padding - kernelSize) / Double(strideHeight))) + 1
+        let outputWidth: Int = Int(floor(
+            Double(inputWidth + 2 * padding - kernelSize) / Double(strideWidth))) + 1
         let img2colBuffer: Tensor<DataType> = Tensor<DataType>(
             shape: [nInputChannels * kernelSize * kernelSize, outputHeight * outputWidth],
             initValue: DataType.zero)
@@ -363,12 +408,12 @@ public class Conv2DLayerImg2col: NetworkModuleProtocol {
         cmdEncoder.setBuffer(matMulParamsGPU, offset: 0, index: 4)
 
         let tileW = Int(MM_TILE_W)
-        let nthreadsPerGroup = MTLSize(width: tileW, height: tileW, depth: 1)
-        let ngroups = MTLSize(
+        let nthreadsPerBlock = MTLSize(width: tileW, height: tileW, depth: 1)
+        let nblocks = MTLSize(
             width: (img2colBufferShape[1] + tileW - 1) / tileW,
             height: (nOutputChannels + tileW - 1) / tileW,
             depth: 1)
-        cmdEncoder.dispatchThreadgroups(ngroups, threadsPerThreadgroup: nthreadsPerGroup)
+        cmdEncoder.dispatchThreadgroups(nblocks, threadsPerThreadgroup: nthreadsPerBlock)
 
         cmdEncoder.endEncoding()
 

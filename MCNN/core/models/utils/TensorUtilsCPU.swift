@@ -27,4 +27,21 @@ public struct TensorUtilsCPU<DataType: AdditiveArithmetic & Numeric> {
         }
         return result
     }
+    
+    public static func matMul(result: inout Tensor<DataType>, resultDimStart: Int,
+                              t1: Tensor<DataType>, t2: Tensor<DataType>) {
+        let t1Shape: [Int] = t1.getShape()
+        let t2Shape: [Int] = t2.getShape()
+        assert(t1Shape.count == 2 && t2Shape.count == 2 && t1Shape[1] == t2Shape[0])
+        
+        for i in 0..<t1Shape[0] {
+            for j in 0..<t2Shape[1] {
+                var sum: DataType = DataType.zero
+                for k in 0..<t1Shape[1] {
+                    sum += (t1.getData(idx: [i, k]) * t2.getData(idx: [k, j]))
+                }
+                result.setData(idx: [resultDimStart, i, j], value: sum)
+            }
+        }
+    }
 }

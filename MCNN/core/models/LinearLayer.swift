@@ -59,7 +59,7 @@ public class LinearLayer: NetworkModuleProtocol {
         let cmdEncoder = cmdBuffer.makeComputeCommandEncoder()!
         assert(MTLUtils.addComputePipeline(cmdEncoder: cmdEncoder,
                                            kernelLibrary: MTLCommons.defaultLib,
-                                           kernelFuncName: "matmul") == true)
+                                           kernelFuncName: "matmul_tiling") == true)
 
         let batchSize = input.getShape()[0]
         let result = Tensor<DataType>(shape: [batchSize, nOutputFeatures], initValue: 0)

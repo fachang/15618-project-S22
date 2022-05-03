@@ -55,9 +55,9 @@ public class VGGBenchmark {
         if (gpu) {
             input.copyToGPU()
         }
-        let network = Conv2DLayerImg2col(nInputChannels: 3, nOutputChannels: 64, bias: true,
-                                         kernelSize: 3, strideHeight: 1, strideWidth: 1,
-                                         padding: 1, paddingMode: PaddingMode.zeros, gpu: gpu)
+        let network = VGG16.Conv2DLayer(nInputChannels: 3, nOutputChannels: 64, bias: true,
+                                        kernelSize: 3, strideHeight: 1, strideWidth: 1,
+                                        padding: 1, paddingMode: PaddingMode.zeros, gpu: gpu)
         let initElapsedTime = DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds
         
         startTime = DispatchTime.now()

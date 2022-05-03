@@ -25,9 +25,9 @@ public class AlexNetBenchmark {
         if (gpu) {
             input.copyToGPU()
         }
-        let network = Conv2DLayerImg2col(nInputChannels: 3, nOutputChannels: 96, bias: true,
-                                         kernelSize: 11, strideHeight: 4, strideWidth: 4,
-                                         padding: 0, paddingMode: PaddingMode.zeros, gpu: gpu)
+        let network = NetworkModuleProtocol.Conv2DLayer(nInputChannels: 3, nOutputChannels: 96, bias: true,
+                                                        kernelSize: 11, strideHeight: 4, strideWidth: 4,
+                                                        padding: 0, paddingMode: PaddingMode.zeros, gpu: gpu)
         let initElapsedTime = DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds
         
         startTime = DispatchTime.now()

@@ -159,9 +159,9 @@ class BenchmarkViewController: UIViewController {
     
     @IBAction func adhocBtnHandler(sender: UIButton) {
         // runLinearNetworkBenchmark()
-        // runConvNetworkBenchmark()
+        runConvNetworkBenchmark()
         // runBigConvNetworkBenchmark()
-        runConvNetworkBenchmark_3_96_11()
+        // runConvNetworkBenchmark_3_96_11()
     }
     
     private func runLeNetBenchmark() {
@@ -173,7 +173,7 @@ class BenchmarkViewController: UIViewController {
         metricString += ("[CPU] " + cpuTester.runConv2D().description)
         metricString += ("[GPU] " + gpuTester.runConv2D().description)
         metricString += "+----------------------------------+\n\n"
-        
+
         metricString += "+-------- Max Pool2D Layer --------+\n"
         metricString += ("[CPU] " + cpuTester.runMaxPool2D().description)
         metricString += ("[GPU] " + gpuTester.runMaxPool2D().description)
@@ -203,7 +203,7 @@ class BenchmarkViewController: UIViewController {
         let gpuTester = VGGBenchmark(gpu: true)
         
         metricString += "+---------- Conv2D Layer ----------+\n"
-        metricString += ("[CPU] " + cpuTester.runConv2D().description)
+        // metricString += ("[CPU] " + cpuTester.runConv2D().description)
         metricString += ("[GPU] " + gpuTester.runConv2D().description)
         metricString += "+----------------------------------+\n\n"
         
@@ -236,7 +236,7 @@ class BenchmarkViewController: UIViewController {
         let gpuTester = AlexNetBenchmark(gpu: true)
         
         metricString += "+---------- Conv2D Layer ----------+\n"
-        metricString += ("[CPU] " + cpuTester.runConv2D().description)
+        // metricString += ("[CPU] " + cpuTester.runConv2D().description)
         metricString += ("[GPU] " + gpuTester.runConv2D().description)
         metricString += "+----------------------------------+\n\n"
         

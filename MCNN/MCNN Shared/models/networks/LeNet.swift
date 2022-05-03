@@ -13,7 +13,7 @@ private class C1: NetworkModuleProtocol {
 
     public init(gpu: Bool = false) {
         self.layers = [
-            Conv2DLayerImg2col(nInputChannels: 1, nOutputChannels: 6, bias: true,
+            Conv2DLayer(nInputChannels: 1, nOutputChannels: 6, bias: true,
                         kernelSize: 5, strideHeight: 1, strideWidth: 1,
                         padding: 0, paddingMode: PaddingMode.zeros, gpu: gpu),
             ReLu(gpu: gpu),
@@ -36,7 +36,7 @@ private class C2: NetworkModuleProtocol {
 
     public init(gpu: Bool = false) {
         self.layers = [
-            Conv2DLayerImg2col(nInputChannels: 6, nOutputChannels: 16, bias: true,
+            Conv2DLayer(nInputChannels: 6, nOutputChannels: 16, bias: true,
                         kernelSize: 5, strideHeight: 1, strideWidth: 1,
                         padding: 0, paddingMode: PaddingMode.zeros, gpu: gpu),
             ReLu(gpu: gpu),
@@ -59,7 +59,7 @@ private class C3: NetworkModuleProtocol {
 
     public init(gpu: Bool = false) {
         self.layers = [
-            Conv2DLayerImg2col(nInputChannels: 16, nOutputChannels: 120, bias: true,
+            Conv2DLayer(nInputChannels: 16, nOutputChannels: 120, bias: true,
                         kernelSize: 5, strideHeight: 1, strideWidth: 1,
                         padding: 0, paddingMode: PaddingMode.zeros, gpu: gpu),
             ReLu(gpu: gpu),

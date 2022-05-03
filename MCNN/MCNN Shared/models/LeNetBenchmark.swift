@@ -46,7 +46,7 @@ public class LeNetBenchmark {
         if (gpu) {
             input.copyToGPU()
         }
-        let network = Conv2DLayerImg2col(nInputChannels: 1, nOutputChannels: 6, bias: true,
+        let network = LeNet5.Conv2DLayer(nInputChannels: 1, nOutputChannels: 6, bias: true,
                                          kernelSize: 5, strideHeight: 1, strideWidth: 1,
                                          padding: 0, paddingMode: PaddingMode.zeros, gpu: gpu)
         let initElapsedTime = DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds
