@@ -1,4 +1,13 @@
 //
+//  VGGBenchmark.swift
+//  MCNN iOS
+//
+//  Created by BerthCloud Chou on 2022/5/3.
+//
+
+import Foundation
+
+//
 //  LeNetBenchmark.swift
 //  MCNN iOS
 //
@@ -7,7 +16,7 @@
 
 import Foundation
 
-public class LeNetBenchmark {
+public class VGGBenchmark {
     public typealias DataType = Float32
     
     private let batchSize: Int
@@ -19,13 +28,13 @@ public class LeNetBenchmark {
     }
 
     public func runFullNetwork() -> Metrics {
-        let input: Tensor<DataType> = TensorBuilder.buildRandFloat32Tensor([batchSize, 1, 32, 32], 0, 256)
+        let input: Tensor<DataType> = TensorBuilder.buildRandFloat32Tensor([batchSize, 3, 224, 224], 0, 256)
         
         var startTime = DispatchTime.now()
         if (gpu) {
             input.copyToGPU()
         }
-        let network = LeNet5(gpu: gpu)
+        let network = VGG16(gpu: gpu)
         let initElapsedTime = DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds
         
         startTime = DispatchTime.now()
@@ -40,15 +49,15 @@ public class LeNetBenchmark {
     }
     
     public func runConv2D() -> Metrics {
-        let input: Tensor<DataType> = TensorBuilder.buildRandFloat32Tensor([batchSize, 1, 32, 32], 0, 256)
+        let input: Tensor<DataType> = TensorBuilder.buildRandFloat32Tensor([batchSize, 3, 224, 224], 0, 256)
 
         var startTime = DispatchTime.now()
         if (gpu) {
             input.copyToGPU()
         }
-        let network = Conv2DLayerImg2col(nInputChannels: 1, nOutputChannels: 6, bias: true,
-                                         kernelSize: 5, strideHeight: 1, strideWidth: 1,
-                                         padding: 0, paddingMode: PaddingMode.zeros, gpu: gpu)
+        let network = Conv2DLayerImg2col(nInputChannels: 3, nOutputChannels: 64, bias: true,
+                                         kernelSize: 3, strideHeight: 1, strideWidth: 1,
+                                         padding: 1, paddingMode: PaddingMode.zeros, gpu: gpu)
         let initElapsedTime = DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds
         
         startTime = DispatchTime.now()
@@ -63,7 +72,7 @@ public class LeNetBenchmark {
     }
     
     public func runMaxPool2D() -> Metrics {
-        let input: Tensor<DataType> = TensorBuilder.buildRandFloat32Tensor([batchSize, 3, 28, 28], 0, 1)
+        let input: Tensor<DataType> = TensorBuilder.buildRandFloat32Tensor([batchSize, 3, 112, 112], 0, 1)
 
         var startTime = DispatchTime.now()
         if (gpu) {
@@ -84,13 +93,13 @@ public class LeNetBenchmark {
     }
     
     public func runFC() -> Metrics {
-        let input: Tensor<DataType> = TensorBuilder.buildRandFloat32Tensor([batchSize, 120], 0, 1)
+        let input: Tensor<DataType> = TensorBuilder.buildRandFloat32Tensor([batchSize, 25088], 0, 1)
 
         var startTime = DispatchTime.now()
         if (gpu) {
             input.copyToGPU()
         }
-        let network = LinearLayer(nInputFeatures: 120, nOutputFeatures: 84, bias: true, gpu: gpu)
+        let network = LinearLayer(nInputFeatures: 25088, nOutputFeatures: 4096, bias: true, gpu: gpu)
         let initElapsedTime = DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds
         
         startTime = DispatchTime.now()
@@ -105,7 +114,7 @@ public class LeNetBenchmark {
     }
     
     public func runReLu() -> Metrics {
-        let input: Tensor<DataType> = TensorBuilder.buildRandFloat32Tensor([batchSize, 3, 28, 28], -1, 1)
+        let input: Tensor<DataType> = TensorBuilder.buildRandFloat32Tensor([batchSize, 3, 112, 112], -1, 1)
 
         var startTime = DispatchTime.now()
         if (gpu) {

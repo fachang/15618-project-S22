@@ -150,6 +150,7 @@ class BenchmarkViewController: UIViewController {
     }
     
     @IBAction func vggNetBtnHandler(sender: UIButton) {
+        runVGGBenchmark()
     }
     
     @IBAction func alexNetBtnHandler(sender: UIButton) {
@@ -163,7 +164,7 @@ class BenchmarkViewController: UIViewController {
     }
     
     private func runLeNetBenchmark() {
-        var metricString = ""
+        var metricString = "* LeNet-5\n\n"
         let cpuTester = LeNetBenchmark(gpu: false)
         let gpuTester = LeNetBenchmark(gpu: true)
         
@@ -189,6 +190,39 @@ class BenchmarkViewController: UIViewController {
         
         metricString += "+---------- Full Network ----------+\n"
         metricString += ("[CPU] " + cpuTester.runFullNetwork().description)
+        metricString += ("[GPU] " + gpuTester.runFullNetwork().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        benchmarkTextLabel.text = metricString
+    }
+    
+    private func runVGGBenchmark() {
+        var metricString = "* VGG-16\n\n"
+        let cpuTester = VGGBenchmark(gpu: false)
+        let gpuTester = VGGBenchmark(gpu: true)
+        
+        metricString += "+---------- Conv2D Layer ----------+\n"
+        metricString += ("[CPU] " + cpuTester.runConv2D().description)
+        metricString += ("[GPU] " + gpuTester.runConv2D().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+-------- Max Pool2D Layer --------+\n"
+        metricString += ("[CPU] " + cpuTester.runMaxPool2D().description)
+        metricString += ("[GPU] " + gpuTester.runMaxPool2D().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+---------- Linear Layer ----------+\n"
+        // metricString += ("[CPU] " + cpuTester.runFC().description)
+        metricString += ("[GPU] " + gpuTester.runFC().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+----------- ReLU Layer -----------+\n"
+        metricString += ("[CPU] " + cpuTester.runReLu().description)
+        metricString += ("[GPU] " + gpuTester.runReLu().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+---------- Full Network ----------+\n"
+        // metricString += ("[CPU] " + cpuTester.runFullNetwork().description)
         metricString += ("[GPU] " + gpuTester.runFullNetwork().description)
         metricString += "+----------------------------------+\n\n"
         
