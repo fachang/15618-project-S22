@@ -146,7 +146,7 @@ class BenchmarkViewController: UIViewController {
     
     private func runLinearNetworkBenchmark() {
         var startTime = DispatchTime.now()
-        let input = Tensor<DataType>(shape: [10, 3], initValue: 1)
+        let input = Tensor<DataType>(shape: [2, 27], initValue: 1)
         input.copyToGPU()
         let network: TestLinearNetwork = TestLinearNetwork()
         let initElapsedTime = Double(

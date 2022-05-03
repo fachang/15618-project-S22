@@ -55,5 +55,7 @@ struct Conv2DLayerParams {
     uint threadgroups_per_grid_dim4;
 };
 
+#define MM_TILE_W 32
+
 #endif /* BridgeTypes_h */
 

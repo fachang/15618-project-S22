@@ -61,7 +61,7 @@ public class LinearLayer: NetworkModuleProtocol {
         let cmdEncoder = cmdBuffer.makeComputeCommandEncoder()!
         assert(MTLUtils.addComputePipeline(cmdEncoder: cmdEncoder,
                                            kernelLibrary: MTLCommons.defaultLib,
-                                           kernelFuncName: "matmul") == true)
+                                           kernelFuncName: "matmul_tiling") == true)
 
         let batchSize = input.getShape()[0]
         let result = Tensor<DataType>(shape: [batchSize, nOutputFeatures], initValue: 0)
@@ -82,12 +82,12 @@ public class LinearLayer: NetworkModuleProtocol {
         cmdEncoder.setBuffer(params.dataGPU, offset: 0, index: 2)
         cmdEncoder.setBuffer((bias == nil) ? nil : bias!.dataGPU, offset: 0, index: 3)
         cmdEncoder.setBuffer(matMulParamsGPU, offset: 0, index: 4)
-        
-        let nthreadsPerBlock = MTLSize(
-            width: LinearLayer.GROUP_W, height: LinearLayer.GROUP_W, depth: 1)
+
+        let tileW = Int(MM_TILE_W)
+        let nthreadsPerBlock = MTLSize(width: tileW, height: tileW, depth: 1)
         let nblocks = MTLSize(
-            width: (nOutputFeatures + LinearLayer.GROUP_W - 1) / LinearLayer.GROUP_W,
-            height: (batchSize + LinearLayer.GROUP_W - 1) / LinearLayer.GROUP_W, depth: 1)
+            width: (nOutputFeatures + tileW - 1) / tileW,
+            height: (batchSize + tileW - 1) / tileW, depth: 1)
         cmdEncoder.dispatchThreadgroups(nblocks, threadsPerThreadgroup: nthreadsPerBlock)
         
         cmdEncoder.endEncoding()

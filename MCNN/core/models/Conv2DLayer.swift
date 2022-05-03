@@ -40,11 +40,9 @@ public class Conv2DLayerNaive: NetworkModuleProtocol {
 
         let kernelShape = [nOutputChannels, nInputChannels, kernelSize, kernelSize]
         if (initKernels == nil) {
-            self.kernels = Tensor<DataType>(
-                shape: kernelShape, initValue: 1)
+            self.kernels = Tensor<DataType>(shape: kernelShape, initValue: 1)
         } else {
-            self.kernels = Tensor<DataType>(
-                shape: kernelShape, data: initKernels!)
+            self.kernels = Tensor<DataType>(shape: kernelShape, data: initKernels!)
         }
         if (gpu) {
             self.kernels.copyToGPU()
@@ -55,11 +53,9 @@ public class Conv2DLayerNaive: NetworkModuleProtocol {
         } else {
             let biasShape = [1, nOutputChannels];
             if (initBias == nil) {
-                self.bias = Tensor<DataType>(
-                    shape: biasShape, initValue: 1)
+                self.bias = Tensor<DataType>(shape: biasShape, initValue: 1)
             } else {
-                self.bias = Tensor<DataType>(
-                    shape: biasShape, data: initBias!)
+                self.bias = Tensor<DataType>(shape: biasShape, data: initBias!)
             }
             if (gpu) {
                 self.bias!.copyToGPU()
@@ -221,11 +217,9 @@ public class Conv2DLayerImg2col: NetworkModuleProtocol {
 
         let kernelShape = [nOutputChannels, nInputChannels, kernelSize, kernelSize]
         if (initKernels == nil) {
-            self.kernels = Tensor<DataType>(
-                shape: kernelShape, initValue: 1)
+            self.kernels = Tensor<DataType>(shape: kernelShape, initValue: 1)
         } else {
-            self.kernels = Tensor<DataType>(
-                shape: kernelShape, data: initKernels!)
+            self.kernels = Tensor<DataType>(shape: kernelShape, data: initKernels!)
         }
         self.kernels.reshape(shape: [nOutputChannels, nInputChannels * kernelSize * kernelSize])
         if (gpu) {
@@ -237,11 +231,9 @@ public class Conv2DLayerImg2col: NetworkModuleProtocol {
         } else {
             let biasShape = [1, nOutputChannels];
             if (initBias == nil) {
-                self.bias = Tensor<DataType>(
-                    shape: biasShape, initValue: 1)
+                self.bias = Tensor<DataType>(shape: biasShape, initValue: 1)
             } else {
-                self.bias = Tensor<DataType>(
-                    shape: biasShape, data: initBias!)
+                self.bias = Tensor<DataType>(shape: biasShape, data: initBias!)
             }
             if (gpu) {
                 self.bias!.copyToGPU()
@@ -349,7 +341,7 @@ public class Conv2DLayerImg2col: NetworkModuleProtocol {
         let cmdEncoder = cmdBuffer.makeComputeCommandEncoder()!
         assert(MTLUtils.addComputePipeline(cmdEncoder: cmdEncoder,
                                            kernelLibrary: MTLCommons.defaultLib,
-                                           kernelFuncName: "matmul") == true)
+                                           kernelFuncName: "matmul_tiling") == true)
 
         let img2colBufferShape = img2colBuffer.getShape()
         
@@ -370,13 +362,13 @@ public class Conv2DLayerImg2col: NetworkModuleProtocol {
         cmdEncoder.setBuffer((bias == nil) ? nil : bias!.dataGPU, offset: 0, index: 3)
         cmdEncoder.setBuffer(matMulParamsGPU, offset: 0, index: 4)
 
-        let nthreadsPerBlock = MTLSize(
-            width: Conv2DLayerImg2col.GROUP_W, height: Conv2DLayerImg2col.GROUP_W, depth: 1)
-        let nblocks = MTLSize(
-            width: (img2colBufferShape[1] + Conv2DLayerImg2col.GROUP_W - 1) / Conv2DLayerImg2col.GROUP_W,
-            height: (nOutputChannels + Conv2DLayerImg2col.GROUP_W - 1) / Conv2DLayerImg2col.GROUP_W,
+        let tileW = Int(MM_TILE_W)
+        let nthreadsPerGroup = MTLSize(width: tileW, height: tileW, depth: 1)
+        let ngroups = MTLSize(
+            width: (img2colBufferShape[1] + tileW - 1) / tileW,
+            height: (nOutputChannels + tileW - 1) / tileW,
             depth: 1)
-        cmdEncoder.dispatchThreadgroups(nblocks, threadsPerThreadgroup: nthreadsPerBlock)
+        cmdEncoder.dispatchThreadgroups(ngroups, threadsPerThreadgroup: nthreadsPerGroup)
 
         cmdEncoder.endEncoding()
 
