@@ -97,22 +97,47 @@ public class Conv2DLayerNaive: NetworkModuleProtocol {
                                     let tmpInput: DataType;
                                     if (inputM >= 0 && inputM < inputHeight &&
                                             inputN >= 0 && inputN < inputWidth) {
+                                        /*
                                         tmpInput = input.getData(
                                             idx: [batchIdx, inChannelIdx, inputM, inputN])
+                                         */
+                                        tmpInput = input.data[
+                                            batchIdx * (nInputChannels * inputHeight * inputWidth) +
+                                            inChannelIdx * (inputHeight * inputWidth) +
+                                            inputM * (inputWidth) +
+                                            inputN
+                                        ]
                                     } else {
                                         // paddingMode == PaddingMode.zeros
                                         tmpInput = DataType.zero
                                     }
+                                    /*
                                     tmpConv += (
                                         tmpInput * kernels.getData(idx: [outChannelIdx, inChannelIdx, m, n])
+                                    )
+                                     */
+                                    tmpConv += (
+                                        tmpInput * kernels.data[
+                                            outChannelIdx * (nInputChannels * kernelSize * kernelSize) +
+                                            inChannelIdx * (kernelSize * kernelSize) +
+                                            m * (kernelSize) +
+                                            n
+                                        ]
                                     )
                                 }
                             }
                         }
                         if (bias != nil) {
-                            tmpConv += bias!.getData(idx: [0, outChannelIdx])
+                            // tmpConv += bias!.getData(idx: [0, outChannelIdx])
+                            tmpConv += bias!.data[outChannelIdx]
                         }
-                        result.setData(idx: [batchIdx, outChannelIdx, i, j], value: tmpConv)
+                        // result.setData(idx: [batchIdx, outChannelIdx, i, j], value: tmpConv)
+                        result.data[
+                            batchIdx * (nOutputChannels * outputHeight * outputWidth) +
+                            outChannelIdx * (outputHeight * outputWidth) +
+                            i * (outputWidth) +
+                            j
+                        ] = tmpConv
                     }
                 }
             }
@@ -292,10 +317,25 @@ public class Conv2DLayerImg2col: NetworkModuleProtocol {
                             var val: DataType = DataType.zero
                             if (inputRowStart + m >= 0 && inputRowStart + m < inputHeight &&
                                 inputColStart + n >= 0 && inputColStart + n < inputWidth) {
+                                /*
                                 val = input.getData(idx: [batchIdx, inputChannelIdx,
                                                           inputRowStart + m, inputColStart + n])
+                                 */
+                                val = input.data[
+                                    batchIdx * (nInputChannels * inputHeight * inputWidth) +
+                                    inputChannelIdx * (inputHeight * inputWidth) +
+                                    (inputRowStart + m) * (inputWidth) +
+                                    (inputColStart + n)
+                                ]
                             }
-                            output.setData(idx: [inputChannelIdx, m, n, i, j], value: val)
+                            // output.setData(idx: [inputChannelIdx, m, n, i, j], value: val)
+                            output.data[
+                                inputChannelIdx * (kernelSize * kernelSize * outputHeight * outputWidth) +
+                                m * (kernelSize * outputHeight * outputWidth) +
+                                n * (outputHeight * outputWidth) +
+                                i * (outputWidth) +
+                                j
+                            ] = val
                         }
                     }
                 }
