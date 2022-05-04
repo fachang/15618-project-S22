@@ -77,7 +77,7 @@ kernel void matmul_tiling(device float *output [[ buffer(0) ]],
         for (uint i = 0; i < MM_TILE_W; i++) {
             sum += (mat1_tile[thread_id.y * MM_TILE_W + i] * mat2_tile[i * MM_TILE_W + thread_id.x]);
         }
-        threadgroup_barrier(mem_flags::mem_threadgroup);
+        threadgroup_barrier(mem_flags::mem_none);
     }
 
     if (row < params->mat1_height && col < params->mat2_width) {

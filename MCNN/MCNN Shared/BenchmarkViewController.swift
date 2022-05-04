@@ -158,8 +158,9 @@ class BenchmarkViewController: UIViewController {
     }
     
     @IBAction func adhocBtnHandler(sender: UIButton) {
+        runAdhocBenchmark()
         // runLinearNetworkBenchmark()
-        runConvNetworkBenchmark()
+        // runConvNetworkBenchmark()
         // runBigConvNetworkBenchmark()
         // runConvNetworkBenchmark_3_96_11()
     }
@@ -180,7 +181,7 @@ class BenchmarkViewController: UIViewController {
         metricString += "+----------------------------------+\n\n"
         
         metricString += "+---------- Linear Layer ----------+\n"
-        metricString += ("[CPU] " + cpuTester.runFC().description)
+        // metricString += ("[CPU] " + cpuTester.runFC().description)
         metricString += ("[GPU] " + gpuTester.runFC().description)
         metricString += "+----------------------------------+\n\n"
         
@@ -190,7 +191,7 @@ class BenchmarkViewController: UIViewController {
         metricString += "+----------------------------------+\n\n"
         
         metricString += "+---------- Full Network ----------+\n"
-        metricString += ("[CPU] " + cpuTester.runFullNetwork().description)
+        // metricString += ("[CPU] " + cpuTester.runFullNetwork().description)
         metricString += ("[GPU] " + gpuTester.runFullNetwork().description)
         metricString += "+----------------------------------+\n\n"
         
@@ -203,7 +204,7 @@ class BenchmarkViewController: UIViewController {
         let gpuTester = VGGBenchmark(gpu: true)
         
         metricString += "+---------- Conv2D Layer ----------+\n"
-        metricString += ("[CPU] " + cpuTester.runConv2D().description)
+        // metricString += ("[CPU] " + cpuTester.runConv2D().description)
         metricString += ("[GPU] " + gpuTester.runConv2D().description)
         metricString += "+----------------------------------+\n\n"
         
@@ -236,7 +237,7 @@ class BenchmarkViewController: UIViewController {
         let gpuTester = AlexNetBenchmark(gpu: true)
         
         metricString += "+---------- Conv2D Layer ----------+\n"
-        metricString += ("[CPU] " + cpuTester.runConv2D().description)
+        // metricString += ("[CPU] " + cpuTester.runConv2D().description)
         metricString += ("[GPU] " + gpuTester.runConv2D().description)
         metricString += "+----------------------------------+\n\n"
         
@@ -246,13 +247,31 @@ class BenchmarkViewController: UIViewController {
         metricString += "+----------------------------------+\n\n"
         
         metricString += "+---------- Linear Layer ----------+\n"
-        metricString += ("[CPU] " + cpuTester.runFC().description)
+        // metricString += ("[CPU] " + cpuTester.runFC().description)
         metricString += ("[GPU] " + gpuTester.runFC().description)
         metricString += "+----------------------------------+\n\n"
         
         metricString += "+----------- ReLU Layer -----------+\n"
-        metricString += ("[CPU] " + cpuTester.runReLu().description)
+        // metricString += ("[CPU] " + cpuTester.runReLu().description)
         metricString += ("[GPU] " + gpuTester.runReLu().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        benchmarkTextLabel.text = metricString
+    }
+    
+    private func runAdhocBenchmark() {
+        var metricString = "* Adhoc\n\n"
+        // let cpuTester = AdhocBenchmark(gpu: false)
+        let gpuTester = AdhocBenchmark(gpu: true)
+        
+        metricString += "+------- Linear 4096 * 4096 -------+\n"
+        // metricString += ("[CPU] " + cpuTester.runFC_128_4096_4096().description)
+        metricString += ("[GPU] " + gpuTester.runFC_128_4096_4096().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+---- Conv2D 96 * 11 * 11 (s4) ----+\n"
+        // metricString += ("[CPU] " + cpuTester.runConv2D_96_11_4_0().description)
+        metricString += ("[GPU] " + gpuTester.runConv2D_96_11_4_0().description)
         metricString += "+----------------------------------+\n\n"
         
         benchmarkTextLabel.text = metricString

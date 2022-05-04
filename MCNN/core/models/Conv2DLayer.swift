@@ -426,7 +426,7 @@ public class Conv2DLayerImg2col: NetworkModuleProtocol {
         let cmdEncoder = cmdBuffer.makeComputeCommandEncoder()!
         assert(MTLUtils.addComputePipeline(cmdEncoder: cmdEncoder,
                                            kernelLibrary: MTLCommons.defaultLib,
-                                           kernelFuncName: "matmul_tiling") == true)
+                                           kernelFuncName: "matmul") == true)
 
         let img2colBufferShape = img2colBuffer.getShape()
         
