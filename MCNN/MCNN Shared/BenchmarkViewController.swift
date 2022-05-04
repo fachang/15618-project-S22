@@ -214,7 +214,7 @@ class BenchmarkViewController: UIViewController {
         metricString += "+----------------------------------+\n\n"
         
         metricString += "+---------- Linear Layer ----------+\n"
-        metricString += ("[CPU] " + cpuTester.runFC().description)
+        // metricString += ("[CPU] " + cpuTester.runFC().description)
         metricString += ("[GPU] " + gpuTester.runFC().description)
         metricString += "+----------------------------------+\n\n"
         
@@ -224,7 +224,7 @@ class BenchmarkViewController: UIViewController {
         metricString += "+----------------------------------+\n\n"
         
         metricString += "+---------- Full Network ----------+\n"
-        metricString += ("[CPU] " + cpuTester.runFullNetwork().description)
+        // metricString += ("[CPU] " + cpuTester.runFullNetwork().description)
         metricString += ("[GPU] " + gpuTester.runFullNetwork().description)
         metricString += "+----------------------------------+\n\n"
         
@@ -252,7 +252,7 @@ class BenchmarkViewController: UIViewController {
         metricString += "+----------------------------------+\n\n"
         
         metricString += "+----------- ReLU Layer -----------+\n"
-        // metricString += ("[CPU] " + cpuTester.runReLu().description)
+        metricString += ("[CPU] " + cpuTester.runReLu().description)
         metricString += ("[GPU] " + gpuTester.runReLu().description)
         metricString += "+----------------------------------+\n\n"
         
