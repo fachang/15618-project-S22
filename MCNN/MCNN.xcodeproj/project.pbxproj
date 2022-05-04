@@ -34,6 +34,7 @@
 		FEAE469E28210F9600E00EE1 /* VGG.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAE469D28210F9600E00EE1 /* VGG.swift */; };
 		FEAE46A028211D9C00E00EE1 /* AlexNetBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAE469F28211D9C00E00EE1 /* AlexNetBenchmark.swift */; };
 		FEAE46A42821BED500E00EE1 /* AdhocBenchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAE46A32821BED500E00EE1 /* AdhocBenchmark.swift */; };
+		FEAE46A82822F66E00E00EE1 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAE46A72822F66D00E00EE1 /* CameraViewController.swift */; };
 		FEE6543F281A5A8A0022C8C1 /* MatMul.metal in Sources */ = {isa = PBXBuildFile; fileRef = FEE6543E281A5A8A0022C8C1 /* MatMul.metal */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +68,7 @@
 		FEAE469D28210F9600E00EE1 /* VGG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VGG.swift; sourceTree = "<group>"; };
 		FEAE469F28211D9C00E00EE1 /* AlexNetBenchmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlexNetBenchmark.swift; sourceTree = "<group>"; };
 		FEAE46A32821BED500E00EE1 /* AdhocBenchmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdhocBenchmark.swift; sourceTree = "<group>"; };
+		FEAE46A72822F66D00E00EE1 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CameraViewController.swift; path = models/CameraViewController.swift; sourceTree = "<group>"; };
 		FEE6543E281A5A8A0022C8C1 /* MatMul.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MatMul.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -153,6 +155,7 @@
 			children = (
 				FE03B84D280DEBC30015B1A7 /* models */,
 				FE4F756227EA6BAF00484934 /* BenchmarkViewController.swift */,
+				FEAE46A72822F66D00E00EE1 /* CameraViewController.swift */,
 			);
 			path = "MCNN Shared";
 			sourceTree = "<group>";
@@ -336,6 +339,7 @@
 				FE03B8362804FD990015B1A7 /* Conv2DLayer.swift in Sources */,
 				FEAE469E28210F9600E00EE1 /* VGG.swift in Sources */,
 				FE03B851280E06230015B1A7 /* Conv2DLayer.metal in Sources */,
+				FEAE46A82822F66E00E00EE1 /* CameraViewController.swift in Sources */,
 				FEAE46932820C69A00E00EE1 /* LeNetBenchmark.swift in Sources */,
 				15C804EF280E64F9008E24B2 /* MaxPooling.metal in Sources */,
 				FEE6543F281A5A8A0022C8C1 /* MatMul.metal in Sources */,
@@ -496,6 +500,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y87F2QX298;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Object Detection Demo";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -527,6 +532,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y87F2QX298;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Object Detection Demo";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

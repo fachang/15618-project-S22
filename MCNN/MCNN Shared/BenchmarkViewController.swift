@@ -128,6 +128,7 @@ class BenchmarkViewController: UIViewController {
     @IBOutlet var vggNetBtn: UIButton!
     @IBOutlet var alexNetBtn: UIButton!
     @IBOutlet var adhotBtn: UIButton!
+    @IBOutlet var cameraBtn: UINavigationItem!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -163,6 +164,11 @@ class BenchmarkViewController: UIViewController {
         // runConvNetworkBenchmark()
         // runBigConvNetworkBenchmark()
         // runConvNetworkBenchmark_3_96_11()
+    }
+    
+    @IBAction func cameraBtnHandler(sender: UINavigationItem) {
+        let cameraVC = CameraViewController()
+        present(cameraVC, animated: true)
     }
     
     private func runLeNetBenchmark() {
