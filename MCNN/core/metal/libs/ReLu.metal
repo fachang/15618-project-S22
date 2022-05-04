@@ -10,9 +10,9 @@
 
 using namespace metal;
 
-kernel void relu_forward(const device float *input [[ buffer(0) ]],
-                        device float *output [[ buffer(1) ]],
-                        uint idx [[ thread_position_in_grid ]]) {
+kernel void relu_forward(device float *output [[ buffer(0) ]],
+                         const device float *input [[ buffer(1) ]],
+                         uint idx [[ thread_position_in_grid ]]) {
     if(input[idx] <= 0) {
         output[idx] = 0;
     } else {

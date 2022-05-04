@@ -16,7 +16,7 @@ public class TestLinearNetwork {
     public init() {
         self.layers = [
             LinearLayer(
-                nInputFeatures: 3, nOutputFeatures: 2, bias: true, gpu: true),
+                nInputFeatures: 3, nOutputFeatures: 5, bias: true, gpu: true),
             /*
             LinearLayer(
                 nInputFeatures: 5, nOutputFeatures: 2, bias: true, gpu: true),

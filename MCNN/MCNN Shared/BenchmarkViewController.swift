@@ -124,29 +124,162 @@ class BenchmarkViewController: UIViewController {
     public typealias DataType = Float32
     
     @IBOutlet var benchmarkTextLabel: UILabel!
-    @IBOutlet var runBtn: UIButton!
+    @IBOutlet var leNetBtn: UIButton!
+    @IBOutlet var vggNetBtn: UIButton!
+    @IBOutlet var alexNetBtn: UIButton!
+    @IBOutlet var adhotBtn: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         benchmarkTextLabel.text = "CNN Forward Benchmark"
-        runBtn.setTitle("RUN", for: .normal)
+        leNetBtn.setTitle("LeNet", for: .normal)
+        vggNetBtn.setTitle("VGGNet", for: .normal)
+        alexNetBtn.setTitle("AlexNet", for: .normal)
+        adhotBtn.setTitle("Ad-hoc", for: .normal)
     }
     
     @IBAction func runBenchmark(sender: UIButton) {
 
         let model_wgt = getWandB()
         print(model_wgt[model_wgt.count-1].count)
-//        runLinearNetworkBenchmark()
+    }
 
+    @IBAction func leNetBtnHandler(sender: UIButton) {
+        runLeNetBenchmark()
+    }
+    
+    @IBAction func vggNetBtnHandler(sender: UIButton) {
+        runVGGBenchmark()
+    }
+    
+    @IBAction func alexNetBtnHandler(sender: UIButton) {
+        runAlexNetBenchmark()
+    }
+    
+    @IBAction func adhocBtnHandler(sender: UIButton) {
+        runAdhocBenchmark()
+        // runLinearNetworkBenchmark()
         // runConvNetworkBenchmark()
         // runBigConvNetworkBenchmark()
-        runConvNetworkBenchmark_3_96_11()
+        // runConvNetworkBenchmark_3_96_11()
+    }
+    
+    private func runLeNetBenchmark() {
+        var metricString = "* LeNet-5\n\n"
+        let cpuTester = LeNetBenchmark(gpu: false)
+        let gpuTester = LeNetBenchmark(gpu: true)
+        
+        metricString += "+---------- Conv2D Layer ----------+\n"
+        metricString += ("[CPU] " + cpuTester.runConv2D().description)
+        metricString += ("[GPU] " + gpuTester.runConv2D().description)
+        metricString += "+----------------------------------+\n\n"
+
+        metricString += "+-------- Max Pool2D Layer --------+\n"
+        metricString += ("[CPU] " + cpuTester.runMaxPool2D().description)
+        metricString += ("[GPU] " + gpuTester.runMaxPool2D().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+---------- Linear Layer ----------+\n"
+        // metricString += ("[CPU] " + cpuTester.runFC().description)
+        metricString += ("[GPU] " + gpuTester.runFC().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+----------- ReLU Layer -----------+\n"
+        metricString += ("[CPU] " + cpuTester.runReLu().description)
+        metricString += ("[GPU] " + gpuTester.runReLu().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+---------- Full Network ----------+\n"
+        // metricString += ("[CPU] " + cpuTester.runFullNetwork().description)
+        metricString += ("[GPU] " + gpuTester.runFullNetwork().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        benchmarkTextLabel.text = metricString
+    }
+    
+    private func runVGGBenchmark() {
+        var metricString = "* VGG-16\n\n"
+        let cpuTester = VGGBenchmark(gpu: false)
+        let gpuTester = VGGBenchmark(gpu: true)
+        
+        metricString += "+---------- Conv2D Layer ----------+\n"
+        // metricString += ("[CPU] " + cpuTester.runConv2D().description)
+        metricString += ("[GPU] " + gpuTester.runConv2D().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+-------- Max Pool2D Layer --------+\n"
+        metricString += ("[CPU] " + cpuTester.runMaxPool2D().description)
+        metricString += ("[GPU] " + gpuTester.runMaxPool2D().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+---------- Linear Layer ----------+\n"
+        // metricString += ("[CPU] " + cpuTester.runFC().description)
+        metricString += ("[GPU] " + gpuTester.runFC().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+----------- ReLU Layer -----------+\n"
+        metricString += ("[CPU] " + cpuTester.runReLu().description)
+        metricString += ("[GPU] " + gpuTester.runReLu().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+---------- Full Network ----------+\n"
+        // metricString += ("[CPU] " + cpuTester.runFullNetwork().description)
+        metricString += ("[GPU] " + gpuTester.runFullNetwork().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        benchmarkTextLabel.text = metricString
+    }
+    
+    private func runAlexNetBenchmark() {
+        var metricString = "* AlexNet\n\n"
+        let cpuTester = AlexNetBenchmark(gpu: false)
+        let gpuTester = AlexNetBenchmark(gpu: true)
+        
+        metricString += "+---------- Conv2D Layer ----------+\n"
+        // metricString += ("[CPU] " + cpuTester.runConv2D().description)
+        metricString += ("[GPU] " + gpuTester.runConv2D().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+-------- Max Pool2D Layer --------+\n"
+        metricString += ("[CPU] " + cpuTester.runMaxPool2D().description)
+        metricString += ("[GPU] " + gpuTester.runMaxPool2D().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+---------- Linear Layer ----------+\n"
+        // metricString += ("[CPU] " + cpuTester.runFC().description)
+        metricString += ("[GPU] " + gpuTester.runFC().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+----------- ReLU Layer -----------+\n"
+        metricString += ("[CPU] " + cpuTester.runReLu().description)
+        metricString += ("[GPU] " + gpuTester.runReLu().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        benchmarkTextLabel.text = metricString
+    }
+    
+    private func runAdhocBenchmark() {
+        var metricString = "* Adhoc\n\n"
+        // let cpuTester = AdhocBenchmark(gpu: false)
+        let gpuTester = AdhocBenchmark(gpu: true)
+        
+        metricString += "+------- Linear 4096 * 4096 -------+\n"
+        // metricString += ("[CPU] " + cpuTester.runFC_128_4096_4096().description)
+        metricString += ("[GPU] " + gpuTester.runFC_128_4096_4096().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        metricString += "+---- Conv2D 96 * 11 * 11 (s4) ----+\n"
+        // metricString += ("[CPU] " + cpuTester.runConv2D_96_11_4_0().description)
+        metricString += ("[GPU] " + gpuTester.runConv2D_96_11_4_0().description)
+        metricString += "+----------------------------------+\n\n"
+        
+        benchmarkTextLabel.text = metricString
     }
     
     private func runLinearNetworkBenchmark() {
         var startTime = DispatchTime.now()
-        let input = Tensor<DataType>(shape: [10, 3], initValue: 1)
+        let input = Tensor<DataType>(shape: [2, 27], initValue: 1)
         input.copyToGPU()
         let network: TestLinearNetwork = TestLinearNetwork()
         let initElapsedTime = Double(
