@@ -71,3 +71,10 @@ The Metal implementation concern us the most because we find that its documentat
 
 ### Link for pretrained model
 https://drive.google.com/drive/folders/1ynqzZki838f2HIABVC8DEBW6HvlWuw6_?usp=sharing
+
+## 05/04 Final Stage
+### Project Video
+https://drive.google.com/file/d/1U7zKuFRD_NlG1MIacHqNULXSsJGvw47W/view?usp=sharing
+
+
+
