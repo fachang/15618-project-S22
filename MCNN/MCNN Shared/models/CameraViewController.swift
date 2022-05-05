@@ -18,6 +18,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     var previewLayer: CALayer!
     var captureDevice: AVCaptureDevice!
     var detecting: Bool = false
+    let vggNetwork = VGG11(gpu: true)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,10 +73,16 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
 
             DispatchQueue.main.async {
                 let imgTensor: Tensor<DataType> = CameraViewController.imageToTensor(image)
+                /*
                 print([imgTensor.getData(idx: [0, 0, 500, 700]),
                        imgTensor.getData(idx: [0, 1, 500, 700]),
                        imgTensor.getData(idx: [0, 2, 500, 700])])
-                self.detecting = false
+                 */
+                imgTensor.copyToGPU()
+                let forwardResult: Tensor<DataType> = self.vggNetwork.forward(input: imgTensor)
+                forwardResult.copyToCPU()
+                forwardResult.printData()
+                // self.detecting = false
             }
         }
     }
@@ -93,8 +100,11 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         }
         return nil
     }
-    
-    private static func imageToTensor(_ image: UIImage) -> Tensor<DataType> {
+
+    private static func imageToTensor(_ inputImage: UIImage) -> Tensor<DataType> {
+        let image: UIImage = ResizeImage(
+            image: inputImage, targetSize: CGSize(width: 32, height: 32))
+
         guard let cgImage = image.cgImage,
               let data = cgImage.dataProvider?.data,
               let bytes = CFDataGetBytePtr(data) else {
@@ -102,25 +112,56 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         }
         assert(cgImage.colorSpace?.model == .rgb)
 
+        let outputHeight = cgImage.height
+        let outputWidth = cgImage.width
+        
         var outputArray: [DataType] = Array(repeating: 0,
-                                            count: N_INPUT_CHANNELS * cgImage.height * cgImage.width)
+                                            count: N_INPUT_CHANNELS * outputHeight * outputWidth)
 
         let bytesPerPixel = cgImage.bitsPerPixel / cgImage.bitsPerComponent
-        for y in 0 ..< cgImage.height {
-            for x in 0 ..< cgImage.width {
+        for y in 0 ..< outputHeight {
+            for x in 0 ..< outputWidth {
                 let offset = (y * cgImage.bytesPerRow) + (x * bytesPerPixel)
                 for imgChannel in 0 ..< N_INPUT_CHANNELS {
                     outputArray[
-                        imgChannel * (cgImage.height * cgImage.width) +
-                        y * (cgImage.width) +
+                        imgChannel * (outputHeight * outputWidth) +
+                        y * (outputWidth) +
                         x
-                    ] = DataType(bytes[offset + imgChannel])
+                    ] = DataType(bytes[offset + imgChannel]) / 256
                 }
-                // print("[x:\(x), y:\(y)] \(components)")
             }
-            // print("---")
         }
-        return Tensor<DataType>(shape: [1, N_INPUT_CHANNELS, cgImage.height, cgImage.width], data: outputArray)
+        return Tensor<DataType>(shape: [1, N_INPUT_CHANNELS, outputHeight, outputWidth], data: outputArray)
+    }
+    
+    private static func ResizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        /*
+        let size = image.size
+
+        let widthRatio  = targetSize.width  / image.size.width
+        let heightRatio = targetSize.height / image.size.height
+
+        // Figure out what our orientation is, and use that to form the rectangle
+        var newSize: CGSize
+
+        if(widthRatio > heightRatio) {
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else {
+            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+        }
+        */
+        let newSize: CGSize = CGSize(width: targetSize.width,  height: targetSize.height)
+
+        // This is the rect that we've calculated out and this is what is actually used below
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+
+        // Actually do the resizing to the rect using the ImageContext stuff
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage!
     }
     
     func stopCaptureSession() {

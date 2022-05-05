@@ -18,6 +18,7 @@ import Foundation
 
 public class VGGBenchmark {
     public typealias DataType = Float32
+    public typealias VGGNetwork = VGG11
     
     private let batchSize: Int
     private let gpu: Bool
@@ -34,7 +35,7 @@ public class VGGBenchmark {
         if (gpu) {
             input.copyToGPU()
         }
-        let network = VGG16(gpu: gpu)
+        let network = VGGNetwork(gpu: gpu)
         let initElapsedTime = DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds
         
         startTime = DispatchTime.now()
@@ -55,7 +56,7 @@ public class VGGBenchmark {
         if (gpu) {
             input.copyToGPU()
         }
-        let network = VGG16.Conv2DLayer(nInputChannels: 3, nOutputChannels: 64, bias: true,
+        let network = VGGNetwork.Conv2DLayer(nInputChannels: 3, nOutputChannels: 64, bias: true,
                                         kernelSize: 3, strideHeight: 1, strideWidth: 1,
                                         padding: 1, paddingMode: PaddingMode.zeros, gpu: gpu)
         let initElapsedTime = DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds
